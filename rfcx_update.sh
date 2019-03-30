@@ -4,9 +4,9 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
-	echo "updating rfcx_send_checkin script...";
+	echo "updating checkin script...";
 
-	wget -O "$SCRIPT_DIR/rfcx_send_checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-dfo-cli/master/rfcx_send_checkin.sh
+	wget -O "$SCRIPT_DIR/checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-dfo-cli/master/checkin.sh
 
 else
 
@@ -14,7 +14,7 @@ else
 
 fi
 
-chmod a+x "$SCRIPT_DIR/rfcx_send_checkin.sh";
+chmod a+x "$SCRIPT_DIR/checkin.sh";
 
 PRIVATE_DIR="$SCRIPT_DIR/.private"
 GUID=`cat "$PRIVATE_DIR/guid";`;
