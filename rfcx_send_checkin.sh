@@ -4,6 +4,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
 TMP_DIR="$SCRIPT_DIR/tmp"
 if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi
+PRIVATE_DIR="$SCRIPT_DIR/.private"
+if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi
 
 GUARDIAN_GUID="c9d541166e12"
 AUTH_USER="user/a4d3ed62-456d-4266-b018-17d9d45d5dbf"
@@ -27,7 +29,6 @@ AUDIO_FLAC_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.flac"
 EXEC_CLEANUP_PRE=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
 
 AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_ORIG_FILEPATH")
-# AUDIO_SAMPLE_COUNT=$(soxi -s "$AUDIO_ORIG_FILEPATH")
 EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$AUDIO_ORIG_FILEPATH" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FLAC_FILEPATH")
 AUDIO_FLAC_SHA1=$(openssl dgst -sha1 "$AUDIO_FLAC_FILEPATH" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
@@ -39,7 +40,7 @@ EXEC_AUDIO_COMPRESS=$(gzip -q "$AUDIO_FLAC_FILEPATH")
 NOW=$(($(date +%s)*1000))
 
 CHECKIN_JSON="{\"queued_at\":$NOW,\"measured_at\":$NOW,\"audio\":\"$NOW*$DATETIME_EPOCH*flac*$AUDIO_FLAC_SHA1*$AUDIO_SAMPLE_RATE*16384*flac*vbr*10000\",\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
-CHECKIN_JSON_ZIPPED=$(echo "$CHECKIN_JSON" | gzip | base64 -w0)
+CHECKIN_JSON_ZIPPED=$(echo "$CHECKIN_JSON" | gzip | base64)
 echo $CHECKIN_JSON
 
 curl -X POST "https://api.rfcx.org/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "content-type: multipart/form-data" -H "x-auth-token: $AUTH_TOKEN" -H "x-auth-user: $AUTH_USER" -F meta="$CHECKIN_JSON_ZIPPED" -F audio="@$AUDIO_FLAC_FILEPATH.gz";
@@ -48,6 +49,6 @@ echo "$AUDIO_ORIG_FILENAME - $AUDIO_SAMPLE_RATE - $AUDIO_SAMPLE_COUNT - $AUDIO_F
 
 
 # Post Cleanup
-# EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
+EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
 
 

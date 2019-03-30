@@ -4,4 +4,4 @@
 /tmp
 
 # Where restricted credentials might be stored
-/_private
+/.private
