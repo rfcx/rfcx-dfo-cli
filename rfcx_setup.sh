@@ -1,0 +1,35 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+
+PRIVATE_DIR="$SCRIPT_DIR/.private"
+if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi
+
+if [ ! -f "$PRIVATE_DIR/guid" ]; then 
+
+	CHAR_OPTIONS=abcdef0123456789
+	GUID=`for i in {1..12} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
+	CHAR_OPTIONS=abcdefghijklmnopqrstuvwxyz0123456789
+	TOKEN=`for i in {1..40} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
+
+	echo "$GUID" > "$PRIVATE_DIR/guid"
+	echo "$TOKEN" > "$PRIVATE_DIR/token"
+
+else
+
+	GUID=`cat "$PRIVATE_DIR/guid";`;
+	TOKEN=`cat "$PRIVATE_DIR/token";`;
+
+fi
+
+read -p "Please provide a 8 digit registration token: " -n 8 -r
+REGISTRATION_TOKEN="${REPLY}";
+
+curl -X POST \
+  https://api.rfcx.org/v1/guardians/register \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "cache-control: no-cache" \
+  -H "x-auth-user: register" \
+  -H "x-auth-token: $REGISTRATION_TOKEN" \
+  -d "guid=$GUID&token=$TOKEN"
+
