@@ -1,0 +1,7 @@
+.DS_Store
+
+# Temporary cache directory
+/tmp
+
+# Where restricted credentials might be stored
+/_private
