@@ -25,11 +25,5 @@ fi
 read -p "Please provide a 8 digit registration token: " -n 8 -r
 REGISTRATION_TOKEN="${REPLY}";
 
-curl -X POST \
-  https://api.rfcx.org/v1/guardians/register \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -H "cache-control: no-cache" \
-  -H "x-auth-user: register" \
-  -H "x-auth-token: $REGISTRATION_TOKEN" \
-  -d "guid=$GUID&token=$TOKEN"
+curl -X POST "https://api.rfcx.org/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN"
 
