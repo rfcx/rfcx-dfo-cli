@@ -18,6 +18,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	if [ "$NEW_SCRIPT_DIGEST" = "$OLD_SCRIPT_DIGEST" ]; then 
 		echo "no need for update — checkin script has not been changed..."
+		if [ -f "$TMP_DIR/_checkin.sh" ]; then rm "$TMP_DIR/_checkin.sh"; fi
 	else
 
 		if [ -f "$TMP_DIR/_checkin_old.sh" ]; then rm "$TMP_DIR/_checkin_old.sh"; fi
