@@ -51,7 +51,7 @@ else
 
 	curl -X POST "https://$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "content-type: multipart/form-data" -F "meta=$CHECKIN_JSON_ZIPPED" -F "audio=@$AUDIO_FLAC_FILEPATH.gz";
 
-	echo "$AUDIO_ORIG_FILENAME - $AUDIO_SAMPLE_RATE - $AUDIO_SAMPLE_COUNT - $AUDIO_FLAC_SHA1 - $AUDIO_FLAC_FILESIZE"
+	echo ""; echo "$AUDIO_ORIG_FILENAME - $AUDIO_SAMPLE_RATE - $AUDIO_SAMPLE_COUNT - $AUDIO_FLAC_SHA1 - $AUDIO_FLAC_FILESIZE"
 
 	# Post Cleanup
 	EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
