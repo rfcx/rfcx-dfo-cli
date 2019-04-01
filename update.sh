@@ -11,7 +11,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	EXEC_DOWNLOAD=`wget -q -O "$TMP_DIR/_checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-dfo-cli/master/checkin.sh`;
 
-	chmod a+x "$SCRIPT_DIR/checkin_.sh";
+	chmod a+x "$TMP_DIR/_checkin.sh";
 
 	NEW_SCRIPT_DIGEST=$(openssl dgst -sha1 "$TMP_DIR/_checkin.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 	OLD_SCRIPT_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/checkin.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
@@ -37,6 +37,6 @@ GUID=`cat "$PRIVATE_DIR/guid";`;
 TOKEN=`cat "$PRIVATE_DIR/token";`;
 NOW=$(($(date +%s)*1000))
 
-curl -X GET "https://api.rfcx.org/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";
+curl -s -o /dev/null -X GET "https://api.rfcx.org/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";
 
 
