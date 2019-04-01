@@ -15,6 +15,7 @@ else
 
 	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guid";`;
 	GUARDIAN_TOKEN=`cat "$PRIVATE_DIR/token";`;
+	API_HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 
 	read AUDIO_ORIG_FILEPATH
 	AUDIO_ORIG_FORMAT=$(echo $AUDIO_ORIG_FILEPATH | rev | cut -d'.' -f 1 | rev)
@@ -48,7 +49,7 @@ else
 	CHECKIN_JSON_ZIPPED=$(echo "$CHECKIN_JSON" | gzip | base64)
 	echo $CHECKIN_JSON
 
-	curl -X POST "https://api.rfcx.org/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "content-type: multipart/form-data" -F "meta=$CHECKIN_JSON_ZIPPED" -F "audio=@$AUDIO_FLAC_FILEPATH.gz";
+	curl -X POST "https://$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "content-type: multipart/form-data" -F "meta=$CHECKIN_JSON_ZIPPED" -F "audio=@$AUDIO_FLAC_FILEPATH.gz";
 
 	echo "$AUDIO_ORIG_FILENAME - $AUDIO_SAMPLE_RATE - $AUDIO_SAMPLE_COUNT - $AUDIO_FLAC_SHA1 - $AUDIO_FLAC_FILESIZE"
 
