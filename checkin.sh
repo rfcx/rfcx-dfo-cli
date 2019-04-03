@@ -17,25 +17,22 @@ else
 	GUARDIAN_TOKEN=`cat "$PRIVATE_DIR/token";`;
 	API_HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 
-	read AUDIO_ORIG_FILEPATH
-	AUDIO_ORIG_FORMAT=$(echo $AUDIO_ORIG_FILEPATH | rev | cut -d'.' -f 1 | rev)
-	DATETIME_FILENAME_FORMAT="%Y%m%d_%H%M%S.$AUDIO_ORIG_FORMAT"
-	AUDIO_ORIG_FILENAME=$(basename -- "$AUDIO_ORIG_FILEPATH")
-	SENSOR_GUID=$(echo $AUDIO_ORIG_FILENAME | cut -d'_' -f 1)
-	FILENAME_DATETIME_OFFSET=$((${#SENSOR_GUID}+1))
-	SENSOR_GUID_LENGTH=$((${#SENSOR_GUID}+1))
-	FILENAME_DATETIME_LENGTH=$((${#AUDIO_ORIG_FILENAME}-${#SENSOR_GUID}-1))
+	read FILEPATH_ORIG
+	FILENAME_ORIG=$(basename -- "$FILEPATH_ORIG")
+	FILEXT_ORIG=$(echo $FILENAME_ORIG | rev | cut -d'.' -f 1 | rev)
 
-	read -r DATETIME_ISO DATETIME_EPOCH_ <<< "$(date -jf "$DATETIME_FILENAME_FORMAT" '+%Y-%m-%dT%H:%M:%S.000%z %s' "${AUDIO_ORIG_FILENAME:SENSOR_GUID_LENGTH:FILENAME_DATETIME_LENGTH}")"
+	FILENAME_FORMAT=`cat "$SCRIPT_DIR/filename_format";`;
 
-	DATETIME_EPOCH=$((DATETIME_EPOCH_*1000))
-	AUDIO_FLAC_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.flac"
+	read -r EPOCH_SEC <<< "$(date -jf "$FILENAME_FORMAT.$FILEXT_ORIG" '+%s' "$FILENAME_ORIG")"
+
+	EPOCH_MS=$((EPOCH_SEC*1000))
+	AUDIO_FLAC_FILEPATH="$TMP_DIR/$EPOCH_MS.flac"
 
 	# Pre Cleanup
 	EXEC_CLEANUP_PRE=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
 
-	AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_ORIG_FILEPATH")
-	EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$AUDIO_ORIG_FILEPATH" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FLAC_FILEPATH")
+	AUDIO_SAMPLE_RATE=$(soxi -r "$FILEPATH_ORIG")
+	EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$FILEPATH_ORIG" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FLAC_FILEPATH")
 	AUDIO_FLAC_SHA1=$(openssl dgst -sha1 "$AUDIO_FLAC_FILEPATH" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
 	CUT_FLAG=5; if [[ "$OSTYPE" == "darwin"* ]]; then CUT_FLAG=8; fi;  # -f 8 for OSX, -f 5 for linux
@@ -45,16 +42,19 @@ else
 
 	NOW=$(($(date +%s)*1000))
 
-	CHECKIN_JSON="{\"queued_at\":$NOW,\"measured_at\":$NOW,\"audio\":\"$NOW*$DATETIME_EPOCH*flac*$AUDIO_FLAC_SHA1*$AUDIO_SAMPLE_RATE*16384*flac*vbr*10000\",\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
+	CHECKIN_JSON="{\"audio\":\"$NOW*$EPOCH_MS*flac*$AUDIO_FLAC_SHA1*$AUDIO_SAMPLE_RATE*16384*flac*vbr*10000\",\"queued_at\":$NOW,\"measured_at\":$NOW,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
 	CHECKIN_JSON_ZIPPED=$(echo "$CHECKIN_JSON" | gzip | base64)
 	echo $CHECKIN_JSON
+	# CHECKIN_AUDIO_ZIPPED=$(base64 "$AUDIO_FLAC_FILEPATH.gz")
+	# echo $CHECKIN_AUDIO_ZIPPED
 
-	curl -X POST "https://$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "content-type: multipart/form-data" -F "meta=$CHECKIN_JSON_ZIPPED" -F "audio=@$AUDIO_FLAC_FILEPATH.gz";
+	curl -X POST "https://$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW" -F "audio=@$AUDIO_FLAC_FILEPATH.gz" -F "meta=$CHECKIN_JSON_ZIPPED";
+	# curl -X POST "https://$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "content-type: application/x-www-form-urlencoded" -d "meta=$CHECKIN_JSON_ZIPPED&audio=$CHECKIN_AUDIO_ZIPPED";
 
-	echo ""; echo "$AUDIO_ORIG_FILENAME - $AUDIO_SAMPLE_RATE - $AUDIO_SAMPLE_COUNT - $AUDIO_FLAC_SHA1 - $AUDIO_FLAC_FILESIZE"
+	echo ""; echo "$FILENAME_ORIG - $AUDIO_SAMPLE_RATE - $AUDIO_FLAC_SHA1 - $AUDIO_FLAC_FILESIZE"
 
 	# Post Cleanup
-	EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
+	# EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FLAC_FILEPATH" "$AUDIO_FLAC_FILEPATH.gz")
 
 fi
 
