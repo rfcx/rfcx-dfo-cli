@@ -7,8 +7,9 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"
 FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
 
 # Environmental Customizations
-LS_FILESIZE_CUT=5; if [[ "$OSTYPE" == "darwin"* ]]; then LS_FILESIZE_CUT=8; fi;
+# LS_FILESIZE_CUT=5; if [[ "$OSTYPE" == "darwin"* ]]; then LS_FILESIZE_CUT=8; fi;
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
+GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"; fi;
 
 # check if guardian has been set up
 if [ ! -f "$PRIVATE_DIR/guid" ]; then 
@@ -57,6 +58,7 @@ else
 		EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$FILEPATH_ORIG" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FINAL_FILEPATH")
 	else
 		AUDIO_TEMP_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.wav"
+		EXEC_CLEANUP_TEMP=$(rm -f "$AUDIO_TEMP_FILEPATH")
 		EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$FILEPATH_ORIG" "$AUDIO_TEMP_FILEPATH")
 		AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_TEMP_FILEPATH")
 		AUDIO_SAMPLE_PRECISION=$(soxi -p "$AUDIO_TEMP_FILEPATH")
@@ -67,7 +69,7 @@ else
 	# EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$FILEPATH_ORIG" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FINAL_FILEPATH")
 	AUDIO_FINAL_SHA1=$(openssl dgst -sha1 "$AUDIO_FINAL_FILEPATH" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
-	AUDIO_FINAL_FILESIZE=$(ls -l "$AUDIO_FINAL_FILEPATH" | cut -d' ' -f $LS_FILESIZE_CUT)
+	AUDIO_FINAL_FILESIZE=$(stat $GNU_STAT_FLAG "$AUDIO_FINAL_FILEPATH")
 
 	EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
 
