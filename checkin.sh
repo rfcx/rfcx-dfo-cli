@@ -38,11 +38,13 @@ else
 	STR_OFFSET_MIN=${FILENAME_TIMESTAMP_FORMAT/\%M*/}; OFFSET_MIN=${#STR_OFFSET_MIN};
 	STR_OFFSET_SEC=${FILENAME_TIMESTAMP_FORMAT/\%S*/}; OFFSET_SEC=${#STR_OFFSET_SEC};
 
+	MILLISECONDS=0;
+	MILLISECONDS_PADDED=$(printf %03d $MILLISECONDS)
+
 	SYSTEM_TIMEZONE_OFFSET=$($GNU_DATE_BIN '+%z')
-	MILLISECONDS="000";
-	
-	DATETIME_ISO="${FILENAME_ORIG:OFFSET_YEAR:4}-${FILENAME_ORIG:OFFSET_MONTH:2}-${FILENAME_ORIG:OFFSET_DAY:2}T${FILENAME_ORIG:OFFSET_HOUR:2}:${FILENAME_ORIG:OFFSET_MIN:2}:${FILENAME_ORIG:OFFSET_SEC:2}.${MILLISECONDS}${SYSTEM_TIMEZONE_OFFSET}";
-	DATETIME_EPOCH=$(($($GNU_DATE_BIN --date="$DATETIME_ISO" '+%s')*1000))
+
+	DATETIME_ISO="${FILENAME_ORIG:OFFSET_YEAR:4}-${FILENAME_ORIG:OFFSET_MONTH:2}-${FILENAME_ORIG:OFFSET_DAY:2}T${FILENAME_ORIG:OFFSET_HOUR:2}:${FILENAME_ORIG:OFFSET_MIN:2}:${FILENAME_ORIG:OFFSET_SEC:2}.${MILLISECONDS_PADDED}${SYSTEM_TIMEZONE_OFFSET}";
+	DATETIME_EPOCH=$(($($GNU_DATE_BIN --date="$DATETIME_ISO" '+%s')*1000+$MILLISECONDS))
 
 	AUDIO_FINAL_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.$CODEC_FINAL"
 
@@ -70,14 +72,14 @@ else
 	EXEC_AUDIO_COMPRESS=$(gzip --quiet --best --suffix .gz $AUDIO_FINAL_FILEPATH)
 
 	SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
-	CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
+	CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*$AUDIO_SAMPLE_PRECISIONbit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
 	CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g')
 
 	echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
 	echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
 	echo " - ";
 
-	curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Content-Type: multipart/form-data;charset=utf-8" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "https://$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
+	curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Content-Type: multipart/form-data;charset=utf-8" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
 	
 	# echo "";
 	# echo " - ";

@@ -2,10 +2,15 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
+PRIVATE_DIR="$SCRIPT_DIR/.private"
+
+GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
+
+echo " - ";
 
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
-	echo "updating checkin script...";
+	echo " - Checking GitHub for newer 'checkin.sh' script...";
 
 	EXEC_DOWNLOAD=`wget -q -O "$TMP_DIR/_checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-dfo-cli/master/checkin.sh`;
 
@@ -15,35 +20,29 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 	OLD_CHECKIN_SCR_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/checkin.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
 	if [ "$NEW_CHECKIN_SCR_DIGEST" = "$OLD_CHECKIN_SCR_DIGEST" ]; then 
-		echo "no need for update — checkin script has not been changed..."
+		echo " - 'checkin.sh' script has not changed... no update will be performed..."
 		if [ -f "$TMP_DIR/_checkin.sh" ]; then rm "$TMP_DIR/_checkin.sh"; fi
 	else
 
 		if [ -f "$TMP_DIR/_checkin_old.sh" ]; then rm "$TMP_DIR/_checkin_old.sh"; fi
 		mv "$SCRIPT_DIR/checkin.sh" "$TMP_DIR/_checkin_old.sh" && mv "$TMP_DIR/_checkin.sh" "$SCRIPT_DIR/checkin.sh";
 
-		echo "update now"
+		echo " - 'checkin.sh' script has been updated to latest version..."
 	fi
 
 else
 
-	echo "not updating because this is a git repository";
+	echo " - Blocking update process because this is a Git repository.";
 
 fi
 
-PRIVATE_DIR="$SCRIPT_DIR/.private"
 GUID=`cat "$PRIVATE_DIR/guid";`;
 TOKEN=`cat "$PRIVATE_DIR/token";`;
+NOW=$(($($GNU_DATE_BIN '+%s')*1000))
 
-HOSTNAME="api.rfcx.org";
-if [ ! -f "$PRIVATE_DIR/hostname" ]; then 
-	echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"; 
-else
+if [ -f "$PRIVATE_DIR/hostname" ]; then 
+	echo " - Sending 'ping' to RFCx API..."
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
+	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
 fi
-
-NOW=$(($(date +%s)*1000))
-
-curl -s -o /dev/null -X GET "https://$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";
-
 
