@@ -25,7 +25,8 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 	else
 
 		if [ -f "$TMP_DIR/_checkin_old.sh" ]; then rm "$TMP_DIR/_checkin_old.sh"; fi
-		mv "$SCRIPT_DIR/checkin.sh" "$TMP_DIR/_checkin_old.sh" && mv "$TMP_DIR/_checkin.sh" "$SCRIPT_DIR/checkin.sh";
+		if [ -f "$SCRIPT_DIR/checkin.sh" ]; then mv "$SCRIPT_DIR/checkin.sh" "$TMP_DIR/_checkin_old.sh"; fi
+		if [ -f "$TMP_DIR/_checkin.sh" ]; then mv "$TMP_DIR/_checkin.sh" "$SCRIPT_DIR/checkin.sh"; fi
 
 		echo " - 'checkin.sh' script has been updated to latest version..."
 	fi
