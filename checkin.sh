@@ -80,7 +80,7 @@ else
 	echo " - ";
 	echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
 	echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
-	# echo " - JSON: $CHECKIN_JSON"
+	echo " - JSON: $CHECKIN_JSON"
 	# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
 	echo " - ";
 
