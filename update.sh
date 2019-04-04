@@ -13,7 +13,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	echo " - Checking GitHub for newer 'checkin.sh' script...";
 
-	EXEC_DOWNLOAD=$(curl "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh?timestamp=$NOW" > "$TMP_DIR/_checkin.sh");
+	EXEC_DOWNLOAD=$(curl -H "Cache-Control: no-cache" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh?timestamp=$NOW" > "$TMP_DIR/_checkin.sh");
 
 	chmod a+x "$TMP_DIR/_checkin.sh";
 
@@ -44,6 +44,6 @@ TOKEN=`cat "$PRIVATE_DIR/token";`;
 if [ -f "$PRIVATE_DIR/hostname" ]; then 
 	echo " - Sending 'ping' to RFCx API..."
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
-	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "cache-control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
+	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
 fi
 
