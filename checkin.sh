@@ -73,7 +73,7 @@ else
 
 	SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 	CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
-	CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 | $SCRIPT_DIR/utils/urlencode.sh) #  | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g'
+	CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 | iconv -t utf-8 | $SCRIPT_DIR/utils/urlencode.sh) #  | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g'
 
 	echo " - ";
 	echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
@@ -83,7 +83,7 @@ else
 	echo " - ";
 
 	# echo "curl -X POST -H \"x-auth-user: guardian/$GUARDIAN_GUID\" -H \"x-auth-token: $GUARDIAN_TOKEN\" -H \"Cache-Control: no-cache\" -H \"Content-Type: multipart/form-data\" -F \"meta=${CHECKIN_JSON_ZIPPED}\" -F \"audio=@${AUDIO_FINAL_FILEPATH}.gz\" \"$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins\""
-	curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
+	curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data; charset=utf-8" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
 	
 	echo "";
 	echo " - ";
