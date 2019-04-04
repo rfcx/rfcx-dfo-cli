@@ -4,4 +4,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
 AUDIO_DIR=$1;
 
-ls -d $AUDIO_DIR/* | head -2 | $SCRIPT_DIR/checkin.sh;
+AUDIO_FILEPATH=$(ls -d $AUDIO_DIR/* | head -1)
+
+echo $AUDIO_FILEPATH | $SCRIPT_DIR/checkin.sh;

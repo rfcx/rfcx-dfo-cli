@@ -1,9 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-
-PRIVATE_DIR="$SCRIPT_DIR/.private"
-if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi
+PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
 if [ ! -f "$PRIVATE_DIR/guid" ]; then 
 

@@ -1,9 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-
-TMP_DIR="$SCRIPT_DIR/tmp"
-if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi
+TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
