@@ -5,6 +5,7 @@ TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"
 
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
+NOW=$(($($GNU_DATE_BIN '+%s')*1000))
 
 echo " - ";
 
@@ -12,7 +13,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	echo " - Checking GitHub for newer 'checkin.sh' script...";
 
-	EXEC_DOWNLOAD=`wget -q -O "$TMP_DIR/_checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh`;
+	EXEC_DOWNLOAD=`curl -s -o /dev/null "$TMP_DIR/_checkin.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh?timestamp=$NOW"`;
 
 	chmod a+x "$TMP_DIR/_checkin.sh";
 
@@ -39,7 +40,6 @@ fi
 
 GUID=`cat "$PRIVATE_DIR/guid";`;
 TOKEN=`cat "$PRIVATE_DIR/token";`;
-NOW=$(($($GNU_DATE_BIN '+%s')*1000))
 
 if [ -f "$PRIVATE_DIR/hostname" ]; then 
 	echo " - Sending 'ping' to RFCx API..."
