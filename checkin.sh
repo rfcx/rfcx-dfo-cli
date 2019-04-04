@@ -6,6 +6,11 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"
 
 FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
 
+####
+HOSTNAME="https://api.rfcx.org"
+echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
+####
+
 # Environmental Customizations
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"; fi;
