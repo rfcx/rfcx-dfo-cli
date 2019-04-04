@@ -82,8 +82,8 @@ else
 	echo " - ";
 	echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
 	echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
-	echo " - JSON: $CHECKIN_JSON"
-	echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
+	# echo " - JSON: $CHECKIN_JSON"
+	# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
 	echo " - ";
 
 	# echo "curl -X POST -H \"x-auth-user: guardian/$GUARDIAN_GUID\" -H \"x-auth-token: $GUARDIAN_TOKEN\" -H \"Cache-Control: no-cache\" -H \"Content-Type: multipart/form-data\" -F \"meta=${CHECKIN_JSON_ZIPPED}\" -F \"audio=@${AUDIO_FINAL_FILEPATH}.gz\" \"$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins\""
