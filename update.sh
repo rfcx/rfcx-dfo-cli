@@ -13,7 +13,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	echo " - Checking GitHub for newer 'checkin.sh' script...";
 
-	EXEC_DOWNLOAD=$(curl -H "Cache-Control: no-cache" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh?timestamp=$NOW" > "$TMP_DIR/_checkin.sh");
+	EXEC_DOWNLOAD=$(wget -q -O "$TMP_DIR/_checkin.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh?timestamp=$NOW");
 
 	chmod a+x "$TMP_DIR/_checkin.sh";
 
