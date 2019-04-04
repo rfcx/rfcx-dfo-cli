@@ -7,7 +7,6 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"
 FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
 
 # Environmental Customizations
-# LS_FILESIZE_CUT=5; if [[ "$OSTYPE" == "darwin"* ]]; then LS_FILESIZE_CUT=8; fi;
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"; fi;
 GNU_BASE64_FLAG="-w0"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_BASE64_FLAG=""; fi;
@@ -85,14 +84,13 @@ else
 	# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
 	echo " - ";
 
-	# echo "curl -X POST -H \"x-auth-user: guardian/$GUARDIAN_GUID\" -H \"x-auth-token: $GUARDIAN_TOKEN\" -H \"Cache-Control: no-cache\" -H \"Content-Type: multipart/form-data\" -F \"meta=${CHECKIN_JSON_ZIPPED}\" -F \"audio=@${AUDIO_FINAL_FILEPATH}.gz\" \"$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins\""
 	curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
 	
 	echo "";
 	echo " - ";
 
 	# Post Cleanup
-	# EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
+	EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
 
 fi
 
