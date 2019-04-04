@@ -69,7 +69,7 @@ else
 
 	AUDIO_FINAL_FILESIZE=$(ls -l "$AUDIO_FINAL_FILEPATH" | cut -d' ' -f $LS_FILESIZE_CUT)
 
-	EXEC_AUDIO_COMPRESS=$(gzip --quiet --best --suffix .gz $AUDIO_FINAL_FILEPATH)
+	EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
 
 	SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 	CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
