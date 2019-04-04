@@ -12,7 +12,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	echo " - Checking GitHub for newer 'checkin.sh' script...";
 
-	EXEC_DOWNLOAD=`wget -q -O "$TMP_DIR/_checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-dfo-cli/master/checkin.sh`;
+	EXEC_DOWNLOAD=`wget -q -O "$TMP_DIR/_checkin.sh" https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh`;
 
 	chmod a+x "$TMP_DIR/_checkin.sh";
 
