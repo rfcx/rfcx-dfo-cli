@@ -36,3 +36,9 @@ curl -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-w
 
 wget -q -O "$SCRIPT_DIR/update.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/update.sh?timestamp=$NOW"
 chmod a+x "$SCRIPT_DIR/update.sh";
+
+mkdir "$SCRIPT_DIR/utils";
+wget -q -O "$SCRIPT_DIR/utils/urlencode.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/urlencode.sh?timestamp=$NOW"
+chmod a+x "$SCRIPT_DIR/utils/urlencode.sh";
+
+
