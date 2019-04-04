@@ -89,7 +89,7 @@ else
 	echo " - ";
 
 	# Post Cleanup
-	EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
+	# EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
 
 fi
 
