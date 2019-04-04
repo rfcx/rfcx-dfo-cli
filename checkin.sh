@@ -10,6 +10,7 @@ FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
 # LS_FILESIZE_CUT=5; if [[ "$OSTYPE" == "darwin"* ]]; then LS_FILESIZE_CUT=8; fi;
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"; fi;
+GNU_BASE64_FLAG="-w0"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_BASE64_FLAG=""; fi;
 
 # check if guardian has been set up
 if [ ! -f "$PRIVATE_DIR/guid" ]; then 
@@ -76,7 +77,7 @@ else
 	# SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 	SENT_AT_EPOCH=$DATETIME_EPOCH
 	CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
-	CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64) 	# | $SCRIPT_DIR/utils/urlencode.sh							#  | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g'
+	CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | $SCRIPT_DIR/utils/urlencode.sh) 
 
 	echo " - ";
 	echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
