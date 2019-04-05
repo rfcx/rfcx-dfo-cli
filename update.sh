@@ -13,24 +13,8 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 
 	echo " - Checking GitHub for newer 'checkin.sh' script...";
 
-	EXEC_DOWNLOAD=$(wget -q -O "$TMP_DIR/_checkin.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/checkin.sh?timestamp=$NOW");
-
-	chmod a+x "$TMP_DIR/_checkin.sh";
-
-	NEW_CHECKIN_SCR_DIGEST=$(openssl dgst -sha1 "$TMP_DIR/_checkin.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
-	OLD_CHECKIN_SCR_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/checkin.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
-
-	if [ "$NEW_CHECKIN_SCR_DIGEST" = "$OLD_CHECKIN_SCR_DIGEST" ]; then 
-		echo " - 'checkin.sh' script has not changed... no update will be performed..."
-		if [ -f "$TMP_DIR/_checkin.sh" ]; then rm "$TMP_DIR/_checkin.sh"; fi
-	else
-
-		if [ -f "$TMP_DIR/_checkin_old.sh" ]; then rm "$TMP_DIR/_checkin_old.sh"; fi
-		if [ -f "$SCRIPT_DIR/checkin.sh" ]; then mv "$SCRIPT_DIR/checkin.sh" "$TMP_DIR/_checkin_old.sh"; fi
-		if [ -f "$TMP_DIR/_checkin.sh" ]; then mv "$TMP_DIR/_checkin.sh" "$SCRIPT_DIR/checkin.sh"; fi
-
-		echo " - 'checkin.sh' script has been updated to latest version..."
-	fi
+	$SCRIPT_DIR/upgrade.sh "checkin"
+	$SCRIPT_DIR/upgrade.sh "setup"
 
 else
 
