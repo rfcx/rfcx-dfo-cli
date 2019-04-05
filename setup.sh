@@ -79,11 +79,8 @@ if [ ! -f "$SCRIPT_DIR/utils/upgrade.sh" ]; then
 	chmod a+x "$SCRIPT_DIR/utils/upgrade.sh";
 fi
 
-# Download 'crontab' script
-if [ ! -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
-	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/utils/crontab.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/crontab.sh");
-	chmod a+x "$SCRIPT_DIR/utils/crontab.sh";
-fi
+# use 'upgrade' script to fetch 'crontab' script
+$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 
 # use 'upgrade' script to fetch 'update' script
 $SCRIPT_DIR/utils/upgrade.sh "update"
