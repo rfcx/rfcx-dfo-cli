@@ -86,7 +86,7 @@ $SCRIPT_DIR/utils/upgrade.sh "update" && $SCRIPT_DIR/update.sh
 $SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 
 # set cron jobs
-if [ ! -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
+if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
 	$SCRIPT_DIR/utils/crontab.sh "update" 15
 fi
 
