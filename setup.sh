@@ -59,6 +59,8 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 
 	REGISTER=$(curl -s -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
 
+	echo $REGISTER
+	
 	echo "$REGISTER" > "$PRIVATE_DIR/registered"
 
 fi
