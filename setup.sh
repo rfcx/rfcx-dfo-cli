@@ -60,11 +60,28 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 	REGISTER=$(curl -s -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
 
 	echo $REGISTER
-	
+
 	echo "$REGISTER" > "$PRIVATE_DIR/registered"
 
 fi
 
+if [ ! -f "$PRIVATE_DIR/crontab_set" ]; then 
+
+	read -p " - Would you like to add a cronjob? (y/n): " -n 1 -r
+	ALLOW_CRONTAB_EDIT="${REPLY}";
+
+	CRONJOB_USER="root" #$(whoami)
+	CRONJOB_EXEC="$SCRIPT_DIR/update.sh >> $TMP_DIR/update.log"
+
+	if [ "$ALLOW_CRONTAB_EDIT" = "y" ]; then
+
+		echo -e "$(sudo crontab -u $CRONJOB_USER -l)\n* * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRONJOB_USER - 
+
+		echo "$CRONJOB_USER" > "$PRIVATE_DIR/crontab_set"
+
+	fi
+
+fi
 
 
 # Download 'upgrade' script
@@ -79,6 +96,7 @@ $SCRIPT_DIR/upgrade.sh "update"
 # run 'update' script
 $SCRIPT_DIR/update.sh
 
+echo " - "
 echo " - Setup: Complete"
 echo " - "
 
