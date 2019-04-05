@@ -4,7 +4,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
+echo " - Setup Launched"
+echo " - "
+
 if [ ! -f "$PRIVATE_DIR/guid" ]; then 
+
+	echo " - Script is running for the first time..."
+	echo " - Generating new Guardian guid and token."
 
 	CHAR_OPTIONS=abcdef0123456789
 	GUID=`for i in {1..12} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
@@ -18,10 +24,10 @@ if [ ! -f "$PRIVATE_DIR/guid" ]; then
 	HOSTNAME="https://api.rfcx.org"
 	echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
 
-	read -p "Please provide a 8 digit registration token: " -n 8 -r
-	REGISTRATION_TOKEN="${REPLY}";
-
-	curl -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN"
+	echo " - Guardian: $GUID"
+	echo " - Token: [secret]"
+	echo " - RFCx API: $HOSTNAME"
+	echo " - "
 
 else
 
@@ -29,7 +35,31 @@ else
 	TOKEN=`cat "$PRIVATE_DIR/token";`;
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 
+	echo " - This Guardian has previously been setup"
+	echo " - Guardian: $GUID"
+	echo " - Token: [secret]"
+	echo " - RFCx API: $HOSTNAME"
+
 fi
+
+if [ ! -f "$PRIVATE_DIR/registered" ]; then 
+
+	echo " - "
+	echo " - This Guardian must be registered with the RFCx API (see below)..."
+	echo " - "
+
+	read -p " - Please provide a Registration Token (8 digit): " -n 8 -r
+	REGISTRATION_TOKEN="${REPLY}";
+
+	REGISTER=$(curl -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
+
+	echo "***$REGISTER****"
+
+	echo "$REGISTER" > "$PRIVATE_DIR/registered"
+
+fi
+
+
 
 # Download 'upgrade' script
 if [ ! -f "$SCRIPT_DIR/upgrade.sh" ]; then
@@ -45,3 +75,6 @@ $SCRIPT_DIR/update.sh
 
 echo " - Setup complete"
 echo " - "
+
+
+
