@@ -4,7 +4,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
-echo " - Setup Launched"
+echo " - "
+echo " - Setup: Launched"
 echo " - "
 
 if [ ! -f "$PRIVATE_DIR/guid" ]; then 
@@ -76,7 +77,7 @@ $SCRIPT_DIR/upgrade.sh "update"
 # run 'update' script
 $SCRIPT_DIR/update.sh
 
-echo " - Setup complete"
+echo " - Setup: Complete"
 echo " - "
 
 
