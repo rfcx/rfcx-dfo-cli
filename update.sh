@@ -13,7 +13,7 @@ echo " - ";
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
 	$SCRIPT_DIR/utils/upgrade.sh "checkin"
-	$SCRIPT_DIR/utils/upgrade.sh "checkin_stdin"
+	$SCRIPT_DIR/utils/upgrade.sh "stdin"
 	$SCRIPT_DIR/utils/upgrade.sh "setup"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
@@ -31,7 +31,7 @@ if [ -f "$PRIVATE_DIR/hostname" ]; then
 	TOKEN=`cat "$PRIVATE_DIR/token";`;
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 	
-	echo " - Sending 'ping' to RFCx ($HOSTNAME)"
+	echo " - Sending Diagnostic CheckIn to $HOSTNAME..."
 	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
 
 fi
