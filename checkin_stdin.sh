@@ -13,7 +13,3 @@ else
 	echo "Error: '$AUDIO_FILEPATH' could not be found..."
 
 fi
-
-# AUDIO_FILEPATH=$(ls -d $AUDIO_DIR/* | head -1)
-
-# echo $AUDIO_FILEPATH | $SCRIPT_DIR/checkin.sh;
