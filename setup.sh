@@ -11,6 +11,7 @@ if [ ! -f "$PRIVATE_DIR/guid" ]; then
 
 	echo " - Script is running for the first time..."
 	echo " - Generating new Guardian guid and token."
+	echo " - "
 
 	CHAR_OPTIONS=abcdef0123456789
 	GUID=`for i in {1..12} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
@@ -36,24 +37,23 @@ else
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 
 	echo " - This Guardian has previously been setup"
+	echo " - "
 	echo " - Guardian: $GUID"
 	echo " - Token: [secret]"
 	echo " - RFCx API: $HOSTNAME"
+	echo " - "
 
 fi
 
 if [ ! -f "$PRIVATE_DIR/registered" ]; then 
 
-	echo " - "
 	echo " - This Guardian must be registered with the RFCx API (see below)..."
 	echo " - "
 
 	read -p " - Please provide a Registration Token (8 digit): " -n 8 -r
 	REGISTRATION_TOKEN="${REPLY}";
 
-	REGISTER=$(curl -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
-
-	echo "***$REGISTER****"
+	REGISTER=$(curl -s -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
 
 	echo "$REGISTER" > "$PRIVATE_DIR/registered"
 
