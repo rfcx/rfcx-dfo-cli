@@ -3,6 +3,7 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
+LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
 echo " - "
@@ -71,27 +72,6 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 
 fi
 
-if [ ! -f "$PRIVATE_DIR/crontab_set" ]; then 
-
-	read -p " - Would you like to add a cronjob? (y/n): " -n 1 -r
-	ALLOW_CRONTAB_EDIT="${REPLY}";
-
-	CRONJOB_USER=$(whoami) #"root"
-	CRONJOB_EXEC="$SCRIPT_DIR/update.sh >> $TMP_DIR/update.log"
-
-	echo ""; echo " - "
-
-	if [ "$ALLOW_CRONTAB_EDIT" = "y" ]; then
-
-		echo -e "$(sudo crontab -u $CRONJOB_USER -l)\n*/12 * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRONJOB_USER - 
-
-		echo "$CRONJOB_USER" > "$PRIVATE_DIR/crontab_set"
-
-	fi
-
-fi
-
-
 # Download 'upgrade' script
 if [ ! -f "$SCRIPT_DIR/upgrade.sh" ]; then
 	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/upgrade.sh");
@@ -103,6 +83,9 @@ $SCRIPT_DIR/upgrade.sh "update"
 
 # run 'update' script
 $SCRIPT_DIR/update.sh
+
+# option to set recurring cron job for 'update' script
+$SCRIPT_DIR/crontab.sh "update"
 
 echo " - "
 echo " - Setup: Complete"
