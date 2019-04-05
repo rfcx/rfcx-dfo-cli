@@ -4,6 +4,7 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
+UTILS_DIR="$SCRIPT_DIR/utils"; if [ ! -d $UTILS_DIR ]; then mkdir -p $UTILS_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
 echo " - "
@@ -73,25 +74,25 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 fi
 
 # Download 'upgrade' script
-if [ ! -f "$SCRIPT_DIR/upgrade.sh" ]; then
-	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/upgrade.sh");
-	chmod a+x "$SCRIPT_DIR/upgrade.sh";
+if [ ! -f "$SCRIPT_DIR/utils/upgrade.sh" ]; then
+	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/utils/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/upgrade.sh");
+	chmod a+x "$SCRIPT_DIR/utils/upgrade.sh";
 fi
 
 # Download 'crontab' script
-if [ ! -f "$SCRIPT_DIR/crontab.sh" ]; then
-	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/crontab.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/crontab.sh");
-	chmod a+x "$SCRIPT_DIR/crontab.sh";
+if [ ! -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
+	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/utils/crontab.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/crontab.sh");
+	chmod a+x "$SCRIPT_DIR/utils/crontab.sh";
 fi
 
 # use 'upgrade' script to fetch 'update' script
-$SCRIPT_DIR/upgrade.sh "update"
+$SCRIPT_DIR/utils/upgrade.sh "update"
 
 # run 'update' script
 $SCRIPT_DIR/update.sh
 
 # option to set recurring cron job for 'update' script
-$SCRIPT_DIR/crontab.sh "update" 12
+$SCRIPT_DIR/utils/crontab.sh "update" 12
 
 echo " - "
 echo " - Setup: Complete"

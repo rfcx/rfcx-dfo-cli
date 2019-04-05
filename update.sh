@@ -12,9 +12,9 @@ echo " - ";
 
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
-	$SCRIPT_DIR/upgrade.sh "checkin"
-	$SCRIPT_DIR/upgrade.sh "checkin_stdin"
-	$SCRIPT_DIR/upgrade.sh "setup"
+	$SCRIPT_DIR/utils/upgrade.sh "checkin"
+	$SCRIPT_DIR/utils/upgrade.sh "checkin_stdin"
+	$SCRIPT_DIR/utils/upgrade.sh "setup"
 
 else
 
