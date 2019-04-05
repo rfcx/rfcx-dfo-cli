@@ -31,6 +31,12 @@ else
 
 fi
 
+# Download upgrade script
+if [ ! -f "$SCRIPT_DIR/upgrade.sh" ]; then
+	DOWNLOAD=$(wget -q -O "$SCRIPT_DIR/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/upgrade.sh");
+	chmod a+x "$SCRIPT_DIR/upgrade.sh";
+fi
+
 # download or upgrade 'update' script
 $SCRIPT_DIR/upgrade.sh "update"
 
