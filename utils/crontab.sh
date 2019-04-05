@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
@@ -11,7 +11,7 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRI
 SCRIPT_NAME=$1
 CRON_LOOP=$2
 
-if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh" ]; then
+if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-/\/}.sh" ]; then
 
 	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_NAME" ]; then 
 		
@@ -25,7 +25,7 @@ if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh" ]; then
 
 		if [ "$ALLOW_SET_CRONTAB" = "y" ]; then
 
-			CRONJOB_EXEC="$SCRIPT_DIR/$SCRIPT_NAME.sh >> $LOGS_DIR/$SCRIPT_NAME.log"
+			CRONJOB_EXEC="$SCRIPT_DIR/${SCRIPT_NAME/-/\/}.sh >> $LOGS_DIR/$SCRIPT_NAME.log"
 
 			echo -e "$(sudo crontab -u $CRON_USER -l)\n*/$CRON_LOOP * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRON_USER - 
 
