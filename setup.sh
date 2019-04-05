@@ -40,6 +40,8 @@ fi
 # download or upgrade 'update' script
 $SCRIPT_DIR/upgrade.sh "update"
 
+# run update script
+$SCRIPT_DIR/update.sh
 
-
-
+echo " - Setup complete"
+echo " - "

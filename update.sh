@@ -22,12 +22,15 @@ else
 
 fi
 
-GUID=`cat "$PRIVATE_DIR/guid";`;
-TOKEN=`cat "$PRIVATE_DIR/token";`;
 
 if [ -f "$PRIVATE_DIR/hostname" ]; then 
-	echo " - Sending 'ping' to RFCx API..."
+	
+	GUID=`cat "$PRIVATE_DIR/guid";`;
+	TOKEN=`cat "$PRIVATE_DIR/token";`;
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
+	
+	echo " - Sending 'ping' to RFCx ($HOSTNAME)"
 	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
+
 fi
 
