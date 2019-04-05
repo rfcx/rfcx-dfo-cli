@@ -27,7 +27,7 @@ else
 	GUARDIAN_TOKEN=`cat "$PRIVATE_DIR/token";`;
 	API_HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 
-	read FILEPATH_ORIG
+	FILEPATH_ORIG=$1
 	FILENAME_ORIG=$(basename -- "$FILEPATH_ORIG")
 
 	CODEC_ORIG=$(echo $FILENAME_ORIG | rev | cut -d'.' -f 1 | rev | tr '[:upper:]' '[:lower:]')

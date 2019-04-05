@@ -2,8 +2,18 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
-AUDIO_DIR=$1;
+read AUDIO_FILEPATH
 
-AUDIO_FILEPATH=$(ls -d $AUDIO_DIR/* | head -1)
+if [ -f "$AUDIO_FILEPATH" ]; then
 
-echo $AUDIO_FILEPATH | $SCRIPT_DIR/checkin.sh;
+	$SCRIPT_DIR/checkin.sh "$AUDIO_FILEPATH"
+
+else
+
+	echo "Error: '$AUDIO_FILEPATH' could not be found..."
+
+fi
+
+# AUDIO_FILEPATH=$(ls -d $AUDIO_DIR/* | head -1)
+
+# echo $AUDIO_FILEPATH | $SCRIPT_DIR/checkin.sh;
