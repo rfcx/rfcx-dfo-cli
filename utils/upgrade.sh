@@ -19,7 +19,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 fi
 
 if [ "$NEW_DIGEST" = "$OLD_DIGEST" ]; then 
-	echo " - '$SCRIPT_NAME.sh' script has not changed... no update will be performed..."
+	echo " - '$SCRIPT_NAME.sh' - No changes"
 	if [ -f "$TMP_DIR/_$SCRIPT_NAME.sh" ]; then rm "$TMP_DIR/_$SCRIPT_NAME.sh"; fi
 else
 
@@ -27,5 +27,5 @@ else
 	if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then mv "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" "$TMP_DIR/_$SCRIPT_NAME_old.sh"; fi
 	if [ -f "$TMP_DIR/_$SCRIPT_NAME.sh" ]; then mv "$TMP_DIR/_$SCRIPT_NAME.sh" "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh"; fi
 
-	echo " - '$SCRIPT_NAME.sh' script has been updated to latest version..."
+	echo " - '$SCRIPT_NAME.sh' - UPDATED"
 fi
