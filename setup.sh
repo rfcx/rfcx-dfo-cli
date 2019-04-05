@@ -1,4 +1,5 @@
 #!/bin/bash
+PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
@@ -59,9 +60,14 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 
 	REGISTER=$(curl -s -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
 
-	echo $REGISTER
+	echo ""; echo " - "
+	echo " - $REGISTER"
 
-	echo "$REGISTER" > "$PRIVATE_DIR/registered"
+	if [ ! "$REGISTER" = "Unauthorized" ]; then
+		
+		echo "$REGISTER" > "$PRIVATE_DIR/registered"
+
+	fi
 
 fi
 
@@ -70,12 +76,14 @@ if [ ! -f "$PRIVATE_DIR/crontab_set" ]; then
 	read -p " - Would you like to add a cronjob? (y/n): " -n 1 -r
 	ALLOW_CRONTAB_EDIT="${REPLY}";
 
-	CRONJOB_USER="root" #$(whoami)
+	CRONJOB_USER=$(whoami) #"root"
 	CRONJOB_EXEC="$SCRIPT_DIR/update.sh >> $TMP_DIR/update.log"
+
+	echo ""; echo " - "
 
 	if [ "$ALLOW_CRONTAB_EDIT" = "y" ]; then
 
-		echo -e "$(sudo crontab -u $CRONJOB_USER -l)\n* * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRONJOB_USER - 
+		echo -e "$(sudo crontab -u $CRONJOB_USER -l)\n*/12 * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRONJOB_USER - 
 
 		echo "$CRONJOB_USER" > "$PRIVATE_DIR/crontab_set"
 

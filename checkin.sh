@@ -1,15 +1,11 @@
 #!/bin/bash
+PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"
 
 FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
-
-####
-HOSTNAME="https://api.rfcx.org"
-echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
-####
 
 # Environmental Customizations
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
