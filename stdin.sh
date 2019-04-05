@@ -3,11 +3,14 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
+SCRIPT_NAME=$1
+#EXTRA_PARAM=$2
+
 read AUDIO_FILEPATH
 
 if [ -f "$AUDIO_FILEPATH" ]; then
 
-	$SCRIPT_DIR/checkin.sh "$AUDIO_FILEPATH"
+	$SCRIPT_DIR/$SCRIPT_NAME.sh "$AUDIO_FILEPATH" #"$EXTRA_PARAM"
 
 else
 
