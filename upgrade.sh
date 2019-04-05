@@ -13,7 +13,7 @@ chmod a+x "$TMP_DIR/_$SCRIPT_NAME.sh";
 NEW_DIGEST=$(openssl dgst -sha1 "$TMP_DIR/_$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
 OLD_DIGEST="_"
-if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh"]; then
+if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh" ]; then
 	OLD_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 fi
 
