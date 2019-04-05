@@ -79,17 +79,11 @@ if [ ! -f "$SCRIPT_DIR/utils/upgrade.sh" ]; then
 	chmod a+x "$SCRIPT_DIR/utils/upgrade.sh";
 fi
 
-# use 'upgrade' script to fetch 'crontab' script
-$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
-
 # use 'upgrade' script to fetch 'update' script
-$SCRIPT_DIR/utils/upgrade.sh "update"
+$SCRIPT_DIR/utils/upgrade.sh "update" && $SCRIPT_DIR/update.sh
 
-# run 'update' script
-$SCRIPT_DIR/update.sh
-
-# option to set recurring cron job for 'update' script
-$SCRIPT_DIR/utils/crontab.sh "update" 12
+# use 'upgrade' script to fetch 'crontab' script
+$SCRIPT_DIR/utils/upgrade.sh "utils-crontab" && $SCRIPT_DIR/utils/crontab.sh "update" 12
 
 echo " - "
 echo " - Setup: Complete"
