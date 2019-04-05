@@ -11,8 +11,6 @@ echo " - ";
 
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
-	echo " - Checking GitHub for newer 'checkin.sh' script...";
-
 	$SCRIPT_DIR/upgrade.sh "checkin"
 	$SCRIPT_DIR/upgrade.sh "checkin_stdin"
 	$SCRIPT_DIR/upgrade.sh "setup"

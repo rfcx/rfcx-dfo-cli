@@ -11,7 +11,11 @@ DOWNLOAD=$(wget -q -O "$TMP_DIR/_$SCRIPT_NAME.sh" "https://raw.githubusercontent
 chmod a+x "$TMP_DIR/_$SCRIPT_NAME.sh";
 
 NEW_DIGEST=$(openssl dgst -sha1 "$TMP_DIR/_$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
-OLD_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
+
+OLD_DIGEST="_"
+if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh"]; then
+	OLD_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
+fi
 
 if [ "$NEW_DIGEST" = "$OLD_DIGEST" ]; then 
 	echo " - '$SCRIPT_NAME.sh' script has not changed... no update will be performed..."

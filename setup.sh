@@ -45,6 +45,9 @@ else
 
 fi
 
+
+
+
 if [ ! -f "$PRIVATE_DIR/registered" ]; then 
 
 	echo " - This Guardian must be registered with the RFCx API (see below)..."
