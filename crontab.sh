@@ -9,6 +9,7 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRI
 # This script can be used to create cron entries
 
 SCRIPT_NAME=$1
+CRON_LOOP=$2
 
 if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh" ]; then
 
@@ -19,7 +20,6 @@ if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh" ]; then
 		ALLOW_SET_CRONTAB="${REPLY}";
 
 		CRON_USER=$(whoami)
-		CRON_LOOP=12
 
 		echo ""; echo " - "
 
@@ -39,7 +39,7 @@ if [ -f "$SCRIPT_DIR/$SCRIPT_NAME.sh" ]; then
 
 		echo ""; 
 		echo " - cron job has already been set for '$SCRIPT_NAME' script"
-		echo " - cron config: '$SCRIPT_NAME' $CRON_CONFIG"
+		echo " - cron config: $CRON_CONFIG"
 
 	fi
 

@@ -91,7 +91,7 @@ $SCRIPT_DIR/upgrade.sh "update"
 $SCRIPT_DIR/update.sh
 
 # option to set recurring cron job for 'update' script
-$SCRIPT_DIR/crontab.sh "update"
+$SCRIPT_DIR/crontab.sh "update" 12
 
 echo " - "
 echo " - Setup: Complete"
