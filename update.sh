@@ -15,6 +15,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 	$SCRIPT_DIR/utils/upgrade.sh "checkin"
 	$SCRIPT_DIR/utils/upgrade.sh "stdin"
 	$SCRIPT_DIR/utils/upgrade.sh "setup"
+	$SCRIPT_DIR/utils/upgrade.sh "update"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
 

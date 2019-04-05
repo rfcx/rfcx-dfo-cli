@@ -5,3 +5,6 @@
 
 # Where restricted credentials might be stored
 /.private
+
+# LogFile directory
+/logs

@@ -83,7 +83,12 @@ fi
 $SCRIPT_DIR/utils/upgrade.sh "update" && $SCRIPT_DIR/update.sh
 
 # use 'upgrade' script to fetch 'crontab' script
-$SCRIPT_DIR/utils/upgrade.sh "utils-crontab" && $SCRIPT_DIR/utils/crontab.sh "update" 12
+$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
+
+# set cron jobs
+if [ ! -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
+	$SCRIPT_DIR/utils/crontab.sh "update" 15
+fi
 
 echo " - "
 echo " - Setup: Complete"
