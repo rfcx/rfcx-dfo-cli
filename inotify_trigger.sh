@@ -10,7 +10,7 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 
 	# REG="^(?:(.+\.)((?!wav$)[^.]*)|[^.]+)$"
 	
-	inotifywait --event moved_to --format "%w%f" --timeout 60 --include "*.wav$" "$TARGET_DIRECTORY" #| grep --line-buffered ".$TARGET_FILETYPE$" #| $SCRIPT_DIR/stdin.sh "checkin"
+	inotifywait --event moved_to --format "%w%f" --timeout 60 --include "^.*\.(wav|WAV)$" "$TARGET_DIRECTORY" #| grep --line-buffered ".$TARGET_FILETYPE$" #| $SCRIPT_DIR/stdin.sh "checkin"
 
 else
 
