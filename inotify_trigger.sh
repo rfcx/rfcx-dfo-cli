@@ -10,7 +10,7 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 
 	echo "(.*?)\.(${TARGET_FILETYPE,,}|${TARGET_FILETYPE^^})$"
 	
-	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" #| grep --line-buffered "(.*?)\.(wav|WAV)$" #| $SCRIPT_DIR/stdin.sh "checkin"
+	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" | grep "(.*?)\.(${TARGET_FILETYPE,,}|${TARGET_FILETYPE^^})$" #| $SCRIPT_DIR/stdin.sh "checkin"
 
 else
 
