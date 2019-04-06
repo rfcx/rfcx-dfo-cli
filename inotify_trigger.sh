@@ -9,7 +9,8 @@ TARGET_FILETYPE=$2
 if [ -d "$TARGET_DIRECTORY" ]; then 
 
 	# REG="^(?:(.+\.)((?!wav$)[^.]*)|[^.]+)$"
-	echo "${TARGET_FILETYPE,,}-${TARGET_FILETYPE^^}"
+	#echo "${TARGET_FILETYPE,,}-${TARGET_FILETYPE^^}"
+	echo "(.*?)\.(${TARGET_FILETYPE,,}|${TARGET_FILETYPE^^})$"
 	
 	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" | grep --line-buffered "(.*?)\.(wav|WAV)$" #| $SCRIPT_DIR/stdin.sh "checkin"
 
