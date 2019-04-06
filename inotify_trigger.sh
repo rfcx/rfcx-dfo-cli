@@ -8,7 +8,11 @@ TARGET_FILETYPE=$2
 
 if [ -d "$TARGET_DIRECTORY" ]; then 
 	
-	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" | grep ".$TARGET_FILETYPE" | $SCRIPT_DIR/stdin.sh "checkin"
+	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" | grep ".$TARGET_FILETYPE" | $SCRIPT_DIR/stdin.sh "checkin" &
+
+	PID=$!
+
+	echo "ID $PID"
 
 else
 
