@@ -14,9 +14,8 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 	
 	while read -r QUEUE_ENTRY; do
 	  
-	  FILEPATH="${QUEUE_ENTRY/\*/}"
-	  echo $FILEPATH
-	  # $SCRIPT_DIR/checkin.sh "$FILEPATH"
+	  QUEUE_ENTRY_FILEPATH="${QUEUE_ENTRY/\*/}"
+	  $SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY_FILEPATH"
 
 	done <<< "$QUEUE_ENTRIES"
 
