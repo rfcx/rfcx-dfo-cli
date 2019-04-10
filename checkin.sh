@@ -53,49 +53,56 @@ else
 	AUDIO_ORIG_COPY_FILEPATH="$TMP_DIR/$DATETIME_EPOCH_tmp.$CODEC_ORIG"
 	AUDIO_FINAL_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.$CODEC_FINAL"
 
-	# Pre Cleanup
-	EXEC_CLEANUP_PRE=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
+	if [ -f "$FILEPATH_ORIG" ]; then
 
-	EXEC_COPY_ORIG=$(cp "$FILEPATH_ORIG" "$AUDIO_ORIG_COPY_FILEPATH")
+		# Pre Cleanup
+		EXEC_CLEANUP_PRE=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
 
-	if [ "$CODEC_ORIG" = "wav" ]; then 
-		AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_ORIG_COPY_FILEPATH")
-		# AUDIO_SAMPLE_PRECISION=$(soxi -p "$AUDIO_ORIG_COPY_FILEPATH")
-		EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$AUDIO_ORIG_COPY_FILEPATH" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FINAL_FILEPATH")
+		EXEC_COPY_ORIG=$(cp "$FILEPATH_ORIG" "$AUDIO_ORIG_COPY_FILEPATH")
+
+		if [ "$CODEC_ORIG" = "wav" ]; then 
+			AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_ORIG_COPY_FILEPATH")
+			# AUDIO_SAMPLE_PRECISION=$(soxi -p "$AUDIO_ORIG_COPY_FILEPATH")
+			EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$AUDIO_ORIG_COPY_FILEPATH" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FINAL_FILEPATH")
+		else
+			AUDIO_TEMP_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.wav"
+			EXEC_CLEANUP_TEMP=$(rm -f "$AUDIO_TEMP_FILEPATH")
+			EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_TEMP_FILEPATH")
+			AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_TEMP_FILEPATH")
+			# AUDIO_SAMPLE_PRECISION=$(soxi -p "$AUDIO_TEMP_FILEPATH")
+			EXEC_CLEANUP_TEMP=$(rm -f "$AUDIO_TEMP_FILEPATH")
+			cp "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_FINAL_FILEPATH";
+		fi
+
+		AUDIO_SAMPLE_PRECISION=24
+
+		# EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$FILEPATH_ORIG" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FINAL_FILEPATH")
+		AUDIO_FINAL_SHA1=$(openssl dgst -sha1 "$AUDIO_FINAL_FILEPATH" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
+
+		AUDIO_FINAL_FILESIZE=$(stat $GNU_STAT_FLAG "$AUDIO_FINAL_FILEPATH")
+
+		EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
+
+		SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
+		CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
+		CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g') 
+
+		echo " - ";
+		echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
+		echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
+		# echo " - JSON: $CHECKIN_JSON"
+		# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
+		echo " - ";
+
+		curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
+		
+		echo "";
+		echo " - ";
+
 	else
-		AUDIO_TEMP_FILEPATH="$TMP_DIR/$DATETIME_EPOCH.wav"
-		EXEC_CLEANUP_TEMP=$(rm -f "$AUDIO_TEMP_FILEPATH")
-		EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_TEMP_FILEPATH")
-		AUDIO_SAMPLE_RATE=$(soxi -r "$AUDIO_TEMP_FILEPATH")
-		# AUDIO_SAMPLE_PRECISION=$(soxi -p "$AUDIO_TEMP_FILEPATH")
-		EXEC_CLEANUP_TEMP=$(rm -f "$AUDIO_TEMP_FILEPATH")
-		cp "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_FINAL_FILEPATH";
+
+		echo " - '$FILEPATH_ORIG' could not be found..."
 	fi
-
-	AUDIO_SAMPLE_PRECISION=24
-
-	# EXEC_AUDIO_CONVERT=$(ffmpeg -loglevel panic -i "$FILEPATH_ORIG" -ar "$AUDIO_SAMPLE_RATE" "$AUDIO_FINAL_FILEPATH")
-	AUDIO_FINAL_SHA1=$(openssl dgst -sha1 "$AUDIO_FINAL_FILEPATH" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
-
-	AUDIO_FINAL_FILESIZE=$(stat $GNU_STAT_FLAG "$AUDIO_FINAL_FILEPATH")
-
-	EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
-
-	SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
-	CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
-	CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g') 
-
-	echo " - ";
-	echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
-	echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
-	# echo " - JSON: $CHECKIN_JSON"
-	# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
-	echo " - ";
-
-	curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
-	
-	echo "";
-	echo " - ";
 
 	# Post Cleanup
 	EXEC_CLEANUP_POST=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
