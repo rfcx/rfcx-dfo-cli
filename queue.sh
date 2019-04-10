@@ -16,6 +16,9 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 
 		ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/queue-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);";)
 
+		VERIFY_QUEUE_ENTRY=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
+
+		echo "$VERIFY_QUEUE_ENTRY";
 	else
 
 		echo " - File '$FILEPATH_ORIG' could not be found and was not added to queue..."
