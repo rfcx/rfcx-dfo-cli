@@ -13,7 +13,7 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 
 		QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $ROW_LIMIT;";)
 		
-		while read -r QUEUE_ENTRIES; do
+		while read -r QUEUE_ENTRY; do
 		  
 		  if [ -f "$QUEUE_ENTRY" ]; then
 
@@ -28,10 +28,10 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 		done <<< "$QUEUE_ENTRIES"
 
 	else
-	echo "Database '$DB_DIR/queue-sent.db' could not be found"
+	echo " - Database '$DB_DIR/queue-sent.db' could not be found"
 	fi		
 else
-	echo "Database '$DB_DIR/queue-queued.db' could not be found"
+	echo " - Database '$DB_DIR/queue-queued.db' could not be found"
 fi
 
 echo " - "
