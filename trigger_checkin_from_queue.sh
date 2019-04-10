@@ -14,7 +14,7 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 	
 	while read -r QUEUE_ENTRY; do
 	  
-	  echo "$SCRIPT_DIR/checkin.sh '$QUEUE_ENTRY'"
+	  $SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY"
 
 	done <<< "$QUEUE_ENTRIES"
 
