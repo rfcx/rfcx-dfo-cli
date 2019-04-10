@@ -4,6 +4,7 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 
+echo " - "
 
 if [ -f "$DB_DIR/queue-queued.db" ]; then
 
@@ -15,7 +16,9 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 
 else
 
-
+	echo "Database '$DB_DIR/queue-queued.db' could not be found"
 
 fi
+
+echo " - "
 
