@@ -17,9 +17,9 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 
 		QUEUED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 
-		ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/queue-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '*$FILEPATH_ORIG', 0);";)
+		ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/queue-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);";)
 
-		VERIFY_QUEUE_ENTRY=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT queued_at FROM queued WHERE filepath='*$FILEPATH_ORIG';";)
+		VERIFY_QUEUE_ENTRY=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
 
 		if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
 			echo " - ...was SUCCESSFULLY added to the queue..."

@@ -9,20 +9,29 @@ ROW_LIMIT=3;
 echo " - "
 
 if [ -f "$DB_DIR/queue-queued.db" ]; then
+	if [ -f "$DB_DIR/queue-sent.db" ]; then
 
-	QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $ROW_LIMIT;";)
-	
-	while read -r QUEUE_ENTRY; do
-	  
-	  QUEUE_ENTRY_FILEPATH="${QUEUE_ENTRY/\*/}"
-	  $SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY_FILEPATH"
+		QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $ROW_LIMIT;";)
+		
+		while read -r QUEUE_ENTRY; do
+		  
+		  if [ -f "$QUEUE_ENTRY" ]; then
 
-	done <<< "$QUEUE_ENTRIES"
+		  	$SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY"
 
+		  else
+
+		  	echo " - '$QUEUE_ENTRY' could not be found..."
+
+		  fi
+
+		done <<< "$QUEUE_ENTRIES"
+
+	else
+	echo "Database '$DB_DIR/queue-sent.db' could not be found"
+	fi		
 else
-
 	echo "Database '$DB_DIR/queue-queued.db' could not be found"
-
 fi
 
 echo " - "
