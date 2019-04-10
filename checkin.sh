@@ -31,7 +31,9 @@ else
 	if [ "$CODEC_ORIG" = "wav" ]; then CODEC_FINAL="flac"; else CODEC_FINAL="$CODEC_ORIG"; fi;
 
 	echo " - ";
-	echo " - Audio file: $FILENAME_ORIG — Guardian: $GUARDIAN_GUID";
+	echo " - Guardian: $GUARDIAN_GUID";
+	echo " - Audio file: $FILENAME_ORIG";
+	echo " - Full path: '$FILEPATH_ORIG'";
 	
 	STR_OFFSET_YEAR=${FILENAME_TIMESTAMP_FORMAT/\%Y*/}; OFFSET_YEAR=${#STR_OFFSET_YEAR};
 	STR_OFFSET_MONTH=${FILENAME_TIMESTAMP_FORMAT/\%m*/}; OFFSET_MONTH=${#STR_OFFSET_MONTH};
@@ -53,7 +55,7 @@ else
 
 	# Pre Cleanup
 	EXEC_CLEANUP_PRE=$(rm -f "$AUDIO_FINAL_FILEPATH" "$AUDIO_ORIG_COPY_FILEPATH" "$AUDIO_FINAL_FILEPATH.gz")
-	
+
 	EXEC_COPY_ORIG=$(cp "$FILEPATH_ORIG" "$AUDIO_ORIG_COPY_FILEPATH")
 
 	if [ "$CODEC_ORIG" = "wav" ]; then 
