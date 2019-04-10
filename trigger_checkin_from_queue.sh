@@ -13,7 +13,7 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 
 		QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $ROW_LIMIT;";)
 		
-		while read -r QUEUE_ENTRY; do
+		while read -r QUEUE_ENTRIES; do
 		  
 		  if [ -f "$QUEUE_ENTRY" ]; then
 
