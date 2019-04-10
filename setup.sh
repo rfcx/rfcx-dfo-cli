@@ -4,6 +4,7 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
+DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 UTILS_DIR="$SCRIPT_DIR/utils"; if [ ! -d $UTILS_DIR ]; then mkdir -p $UTILS_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
@@ -88,6 +89,13 @@ $SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 # set cron jobs
 if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
 	$SCRIPT_DIR/utils/crontab.sh "update" 15
+fi
+
+# Initialize checkin queue database file
+if [ ! -f "$DB_DIR/queue-queued.db" ]; then
+	QUEUED_INIT=$(sqlite3 "$DB_DIR/queue-queued.db" "CREATE TABLE queued(queued_at INTEGER, filepath TEXT, attempts INTEGER)";)
+	SENT_INIT=$(sqlite3 "$DB_DIR/queue-sent.db" "CREATE TABLE sent(sent_at INTEGER, filename TEXT, checkin_id TEXT)";)
+	chmod a+rw "$DB_DIR/queue-queued.db" "$DB_DIR/queue-sent.db";
 fi
 
 echo " - "
