@@ -10,9 +10,14 @@ echo " - "
 
 if [ -f "$DB_DIR/queue-queued.db" ]; then
 	if [ -f "$DB_DIR/queue-sent.db" ]; then
-
+	
+		QUEUE_ENTRY_COUNT=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT COUNT(*) FROM queued;";)
+		
 		QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $ROW_LIMIT;";)
 		
+		echo "$QUEUE_ENTRY_COUNT"
+		# IFS=$'\n'
+
 		while read -r QUEUE_ENTRY; do
 		  
 		  if [ -f "$QUEUE_ENTRY" ]; then
