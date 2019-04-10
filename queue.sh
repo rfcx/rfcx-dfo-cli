@@ -28,7 +28,3 @@ else
 	echo " - File '$FILEPATH_ORIG' was not queued..."
 	echo " - ."
 fi
-
-
-
-"INSERT INTO queued (queued_at, filepath, attempts) VALUES (123412341234, '/opt/rfcx', 0);";
