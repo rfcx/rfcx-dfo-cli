@@ -10,7 +10,7 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 	QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC;";)
 	
 	while read -r QUEUE_ENTRY; do
-	  echo "... $line ..."
+	  echo "... $QUEUE_ENTRY ..."
 	done <<< "$QUEUE_ENTRIES"
 
 else
