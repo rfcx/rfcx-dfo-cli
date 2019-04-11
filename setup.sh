@@ -88,6 +88,8 @@ $SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 # set cron jobs
 if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
 	$SCRIPT_DIR/utils/crontab.sh "update" 20
+	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60
+	# $SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60
 fi
 
 echo " - "
