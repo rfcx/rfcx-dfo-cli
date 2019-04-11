@@ -38,6 +38,7 @@ if [ -f "$PRIVATE_DIR/hostname" ]; then
 	TOKEN=`cat "$PRIVATE_DIR/token";`;
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 	
+	echo " - ";
 	echo " - Sending Diagnostic CheckIn to $HOSTNAME..."
 	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
 
