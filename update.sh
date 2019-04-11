@@ -24,7 +24,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 	$SCRIPT_DIR/utils/upgrade.sh "utils-log_archive"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-stdin"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
-	# $SCRIPT_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
+	$SCRIPT_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
 
 else
 

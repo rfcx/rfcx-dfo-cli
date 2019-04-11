@@ -12,14 +12,14 @@ UTILS_CHECKIN_DIR="$UTILS_DIR/checkin"; if [ ! -d $UTILS_CHECKIN_DIR ]; then mkd
 
 SCRIPT_NAME=$1
 
-DOWNLOAD=$(wget -q -O "$TMP_DIR/_$SCRIPT_NAME.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/${SCRIPT_NAME/-//}.sh");
+DOWNLOAD=$(wget -q -O "$TMP_DIR/_$SCRIPT_NAME.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/${SCRIPT_NAME//-//}.sh");
 chmod a+x "$TMP_DIR/_$SCRIPT_NAME.sh";
 
 NEW_DIGEST=$(openssl dgst -sha1 "$TMP_DIR/_$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
 OLD_DIGEST="_"
-if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
-	OLD_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
+if [ -f "$SCRIPT_DIR/${SCRIPT_NAME//-//}.sh" ]; then
+	OLD_DIGEST=$(openssl dgst -sha1 "$SCRIPT_DIR/${SCRIPT_NAME//-//}.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 fi
 
 if [ "$NEW_DIGEST" = "$OLD_DIGEST" ]; then 
@@ -28,8 +28,8 @@ if [ "$NEW_DIGEST" = "$OLD_DIGEST" ]; then
 else
 
 	if [ -f "$TMP_DIR/_$SCRIPT_NAME_old.sh" ]; then rm "$TMP_DIR/_$SCRIPT_NAME_old.sh"; fi
-	if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then mv "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" "$TMP_DIR/_$SCRIPT_NAME_old.sh"; fi
-	if [ -f "$TMP_DIR/_$SCRIPT_NAME.sh" ]; then mv "$TMP_DIR/_$SCRIPT_NAME.sh" "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh"; fi
+	if [ -f "$SCRIPT_DIR/${SCRIPT_NAME//-//}.sh" ]; then mv "$SCRIPT_DIR/${SCRIPT_NAME//-//}.sh" "$TMP_DIR/_$SCRIPT_NAME_old.sh"; fi
+	if [ -f "$TMP_DIR/_$SCRIPT_NAME.sh" ]; then mv "$TMP_DIR/_$SCRIPT_NAME.sh" "$SCRIPT_DIR/${SCRIPT_NAME//-//}.sh"; fi
 
 	echo " - '$SCRIPT_NAME.sh' - UPDATED"
 fi
