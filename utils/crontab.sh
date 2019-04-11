@@ -19,9 +19,12 @@ EXEC_PARAM_4=$6
 LOGFILEPATH="$LOGS_DIR/$SCRIPT_NAME.log";
 if [ "$SCRIPT_NAME" = "triggerd" ]; then LOGFILEPATH="$LOGS_DIR/$EXEC_PARAM_1.log"; fi;
 
+SCRIPT_ID="$SCRIPT_NAME";
+if [ "$SCRIPT_NAME" = "triggerd" ]; then SCRIPT_ID="$SCRIPT_NAME_$EXEC_PARAM_1"; fi;
+
 if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
-	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_NAME" ]; then 
+	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_ID" ]; then 
 		
 		echo ""; echo " - "
 		read -p " - Would you like to set a recurring cron job for '$SCRIPT_NAME'? (y/n): " -n 1 -r
@@ -37,7 +40,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 			echo -e "$(sudo crontab -u $CRON_USER -l)\n*/$CRON_LOOP * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRON_USER - 
 
-			echo "'$SCRIPT_NAME.sh' script, by user '$CRON_USER', repeats every $CRON_LOOP minutes" > "$PRIVATE_DIR/crontab_$SCRIPT_NAME"
+			echo "'$SCRIPT_ID' script, by user '$CRON_USER', repeats every $CRON_LOOP minutes" > "$PRIVATE_DIR/crontab_$SCRIPT_ID"
 
 		fi
 
