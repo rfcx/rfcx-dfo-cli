@@ -17,10 +17,13 @@ PARAM3=$5
 PARAM4=$6
 
 LOGFILEPATH="$LOGS_DIR/$SCRIPT_NAME.log";
-if [ "$SCRIPT_NAME" = "triggerd" ]; then LOGFILEPATH="$LOGS_DIR/$PARAM1.log"; fi;
-
 SCRIPT_ID="$SCRIPT_NAME";
-if [ "$SCRIPT_NAME" = "triggerd" ]; then SCRIPT_ID="$SCRIPT_NAME_$PARAM1"; fi;
+if [ "$SCRIPT_NAME" = "triggerd" ]; then 
+	LOGFILEPATH="$LOGS_DIR/$PARAM1.log";
+	SCRIPT_ID="$SCRIPT_NAME_$PARAM1";
+	PARAM3="\"$PARAM3\""
+fi
+
 
 if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 

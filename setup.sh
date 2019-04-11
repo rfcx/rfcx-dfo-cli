@@ -70,7 +70,8 @@ if [ ! -f "$SCRIPT_DIR/utils/upgrade.sh" ]; then
 	chmod a+x "$SCRIPT_DIR/utils/upgrade.sh";
 fi
 
-# use 'upgrade' script to fetch 'update' script
+echo " - "
+echo " - Running Update script"
 $SCRIPT_DIR/utils/upgrade.sh "update" && $SCRIPT_DIR/update.sh
 
 echo " - "
