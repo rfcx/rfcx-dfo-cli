@@ -15,7 +15,7 @@ MAX_BATCH_COUNT=3
 if [ -f "$DB_DIR/checkins-queued.db" ]; then
 	if [ -f "$DB_DIR/checkins-sent.db" ]; then
 	
-		for i in {1..60}
+		for i in {1..12}
 		do
 
 			QUEUE_ENTRY_COUNT=$(($(sqlite3 "$DB_DIR/checkins-queued.db" "SELECT COUNT(*) FROM queued;";)+0))
@@ -56,7 +56,7 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 				echo " - Queue is currently empty."
 			fi
 
-			sleep 2
+			sleep 5
 
 		done
 
