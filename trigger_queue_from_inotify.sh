@@ -13,7 +13,7 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 	for i in {1..12}
 	do
 
-		inotifywait --event moved_to --format "%w%f" --timeout 60 --quiet "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/utils/stdin.sh "queue"
+		inotifywait --event moved_to --format "%w%f" --timeout 20 --quiet "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/utils/stdin.sh "queue"
 
 	done
 
