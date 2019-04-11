@@ -27,7 +27,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_ID" ]; then 
 		
 		echo " - "
-		read -p " - Would you like to set a recurring cron job for '$SCRIPT_NAME'? (y/n): " -n 1 -r
+		read -p " - Would you like to set a recurring cron job for '$SCRIPT_ID'? (y/n): " -n 1 -r
 		ALLOW_SET_CRONTAB="${REPLY}";
 
 		CRON_USER=$(whoami)
@@ -47,7 +47,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 		CRON_CONFIG=`cat "$PRIVATE_DIR/crontab_$SCRIPT_NAME";`;
 
 		echo ""; 
-		echo " - cron job has already been set for '$SCRIPT_NAME' script"
+		echo " - cron job has already been set for '$SCRIPT_ID' script"
 		echo " - cron config: $CRON_CONFIG"
 
 	fi
