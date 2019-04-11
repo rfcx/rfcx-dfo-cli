@@ -15,7 +15,7 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 	
 	if [ -f "$FILEPATH_ORIG" ]; then
 
-		QUEUED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
+		QUEUED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
 		ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/checkins-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);";)
 

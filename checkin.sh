@@ -82,7 +82,7 @@ else
 
 		EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
 
-		SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
+		SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 		CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
 		CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g') 
 
@@ -95,7 +95,7 @@ else
 
 		if [[ $EXEC_CHECKIN == *"checkin_id"* ]]; then
 
-			COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
+			COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 			CHECKIN_LATENCY=$(($COMPLETED_AT_EPOCH-$SENT_AT_EPOCH))
 
 			CHECKIN_GUID=$($SCRIPT_DIR/utils/json_parse.sh 'checkin_id' $EXEC_CHECKIN);

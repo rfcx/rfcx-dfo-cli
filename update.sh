@@ -6,7 +6,7 @@ TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"
 
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
-NOW=$(($($GNU_DATE_BIN '+%s')*1000))
+NOW=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
 echo " - ";
 
