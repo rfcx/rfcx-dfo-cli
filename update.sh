@@ -21,6 +21,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 	$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-database_init"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-json_parse"
+	$SCRIPT_DIR/utils/upgrade.sh "utils-log_archive"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-stdin"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
 
@@ -42,4 +43,7 @@ if [ -f "$PRIVATE_DIR/hostname" ]; then
 	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
 
 fi
+
+# log archive check
+$SCRIPT_DIR/utils/log_archive.sh
 
