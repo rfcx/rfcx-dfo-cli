@@ -10,11 +10,12 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 	
 	REGEX_FILTER=".*\.$TARGET_FILETYPE$"
 
-	# for i in {1..12}
-	# do
+	for i in {1..12}
+	do
+		echo " - Iteration $i"
 		inotifywait --event moved_to --format "%w%f" --quiet --monitor "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/utils/stdin.sh "queue"
 		# echo " - "
-	# done
+	done
 
 else
 
