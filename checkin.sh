@@ -106,10 +106,10 @@ else
 			# echo " - JSON: $EXEC_CHECKIN";
 			
 			# add/remove entries from local databases
-			if [ -f "$DB_DIR/queue-complete.db" ]; then
-				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '$AUDIO_GUID', '$CHECKIN_GUID', $CHECKIN_LATENCY);";)
-				if [ -f "$DB_DIR/queue-sent.db" ]; then
-					REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
+			if [ -f "$DB_DIR/checkins-complete.db" ]; then
+				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/checkins-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '$AUDIO_GUID', '$CHECKIN_GUID', $CHECKIN_LATENCY);";)
+				if [ -f "$DB_DIR/checkins-sent.db" ]; then
+					REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/checkins-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
 				fi
 			fi
 
