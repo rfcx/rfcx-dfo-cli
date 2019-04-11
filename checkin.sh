@@ -97,6 +97,8 @@ else
 
 		EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins")
 		
+		echo "$EXEC_CHECKIN";
+
 		# add/remove entries from local databases
 		if [ -f "$DB_DIR/queue-complete.db" ]; then
 			COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
