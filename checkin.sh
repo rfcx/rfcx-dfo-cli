@@ -33,9 +33,7 @@ else
 	if [ "$CODEC_ORIG" = "wav" ]; then CODEC_FINAL="flac"; else CODEC_FINAL="$CODEC_ORIG"; fi;
 
 	echo " - ";
-	echo " - Guardian: $GUARDIAN_GUID";
-	echo " - Audio file: $FILENAME_ORIG";
-	echo " - Full path: '$FILEPATH_ORIG'";
+	echo " - Guardian: $GUARDIAN_GUID - Audio: $FILENAME_ORIG";
 	
 	STR_OFFSET_YEAR=${FILENAME_TIMESTAMP_FORMAT/\%Y*/}; OFFSET_YEAR=${#STR_OFFSET_YEAR};
 	STR_OFFSET_MONTH=${FILENAME_TIMESTAMP_FORMAT/\%m*/}; OFFSET_MONTH=${#STR_OFFSET_MONTH};
@@ -89,18 +87,16 @@ else
 		CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
 		CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g') 
 
-		echo " - ";
 		echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
 		echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
 		# echo " - JSON: $CHECKIN_JSON"
 		# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
-		echo " - ";
 
 		EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" 2>$LOGS_DIR/error_checkin_curl.log)
 
 		if [[ $EXEC_CHECKIN == *"checkin_id"* ]]; then
 
-			echo "Success: $EXEC_CHECKIN";
+			echo " - Success: $EXEC_CHECKIN";
 			
 			# add/remove entries from local databases
 			if [ -f "$DB_DIR/queue-complete.db" ]; then
