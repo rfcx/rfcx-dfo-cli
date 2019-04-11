@@ -94,13 +94,10 @@ fi
 # Initialize checkin queue database files
 if [ ! -f "$DB_DIR/queue-queued.db" ]; then QUEUED_INIT=$(sqlite3 "$DB_DIR/queue-queued.db" "CREATE TABLE queued(queued_at INTEGER, filepath TEXT, attempts INTEGER)";); fi
 if [ ! -f "$DB_DIR/queue-sent.db" ]; then SENT_INIT=$(sqlite3 "$DB_DIR/queue-sent.db" "CREATE TABLE sent(sent_at INTEGER, filename TEXT)";); fi
-if [ ! -f "$DB_DIR/queue-complete.db" ]; then COMPLETE_INIT=$(sqlite3 "$DB_DIR/queue-complete.db" "CREATE TABLE complete(sent_at INTEGER, completed_at INTEGER, filename TEXT, audio_id TEXT, checkin_id TEXT,)";); fi
+if [ ! -f "$DB_DIR/queue-complete.db" ]; then COMPLETE_INIT=$(sqlite3 "$DB_DIR/queue-complete.db" "CREATE TABLE complete(sent_at INTEGER, completed_at INTEGER, filename TEXT, audio_id TEXT, checkin_id TEXT)";); fi
 chmod a+rw "$DB_DIR/queue-queued.db" "$DB_DIR/queue-sent.db" "$DB_DIR/queue-complete.db";
 
 
 echo " - "
 echo " - Setup: Complete"
 echo " - "
-
-
-
