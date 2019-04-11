@@ -97,26 +97,28 @@ else
 		echo " - ";
 
 		EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" 2>$LOGS_DIR/error_checkin_curl.log)
-		
-		echo "Response: $EXEC_CHECKIN";
 
-		# add/remove entries from local databases
-		if [ -f "$DB_DIR/queue-complete.db" ]; then
-			COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
-			CHECKIN_LATENCY=$(($COMPLETED_AT_EPOCH-$SENT_AT_EPOCH))
-			ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '', '', $CHECKIN_LATENCY);";)
-			if [ -f "$DB_DIR/queue-sent.db" ]; then
-				REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
+		if [[ $EXEC_CHECKIN == *"checkin_id"* ]]; then
+
+			echo "Success: $EXEC_CHECKIN";
+			
+			# add/remove entries from local databases
+			if [ -f "$DB_DIR/queue-complete.db" ]; then
+				COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
+				CHECKIN_LATENCY=$(($COMPLETED_AT_EPOCH-$SENT_AT_EPOCH))
+				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '', '', $CHECKIN_LATENCY);";)
+				if [ -f "$DB_DIR/queue-sent.db" ]; then
+					REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
+				fi
 			fi
+
+		else
+			echo " - Check in was NOT successful..."
+			echo " - Response: $EXEC_CHECKIN"
 		fi
 
-		echo "";
-		echo " - ";
-
 	else
-
 		echo " - '$FILEPATH_ORIG' could not be found..."
-
 	fi
 
 	# Post Cleanup
