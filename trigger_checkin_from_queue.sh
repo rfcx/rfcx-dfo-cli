@@ -38,7 +38,7 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 					SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 					ADD_TO_SENT=$(sqlite3 "$DB_DIR/checkins-sent.db" "INSERT INTO sent (sent_at, filename) VALUES ($SENT_AT_EPOCH, '$QUEUE_ENTRY_FILENAME');";)
 
-			  	$SCRIPT_DIR/checkin.sh "'$QUEUE_ENTRY'" "'$FILENAME_TIMESTAMP_FORMAT'"
+			  	$SCRIPT_DIR/checkin.sh '"$QUEUE_ENTRY"' '"$FILENAME_TIMESTAMP_FORMAT"'
 
 			  else
 
