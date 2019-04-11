@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
 TARGET_DIRECTORY=$1
 TARGET_FILETYPE=$2
@@ -13,7 +13,7 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 	for i in {1..12}
 	do
 
-		inotifywait --event moved_to --format "%w%f" --timeout 20 --quiet "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/utils/stdin.sh "queue"
+		inotifywait --event moved_to --format "%w%f" --timeout 20 --quiet "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $APP_DIR/utils/stdin.sh "queue"
 
 	done
 

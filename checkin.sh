@@ -1,11 +1,11 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
-LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
-DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
-PRIVATE_DIR="$SCRIPT_DIR/.private"
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+TMP_DIR="$APP_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
+LOGS_DIR="$APP_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
+DB_DIR="$APP_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
+PRIVATE_DIR="$APP_DIR/.private"
 
 # Environmental Customizations
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
@@ -103,8 +103,8 @@ else
 				COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 				CHECKIN_LATENCY=$(($COMPLETED_AT_EPOCH-$SENT_AT_EPOCH))
 
-				CHECKIN_GUID=$($SCRIPT_DIR/utils/json_parse.sh 'checkin_id' $EXEC_CHECKIN);
-				AUDIO_GUID=$($SCRIPT_DIR/utils/json_parse.sh 'guid' $EXEC_CHECKIN);
+				CHECKIN_GUID=$($APP_DIR/utils/json_parse.sh 'checkin_id' $EXEC_CHECKIN);
+				AUDIO_GUID=$($APP_DIR/utils/json_parse.sh 'guid' $EXEC_CHECKIN);
 
 				echo " - CheckIn: $CHECKIN_GUID - Audio: $AUDIO_GUID - Latency: $CHECKIN_LATENCY ms"
 				# echo " - JSON: $EXEC_CHECKIN";

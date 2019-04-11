@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../..";
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../..";
 
 
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;

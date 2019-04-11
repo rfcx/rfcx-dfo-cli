@@ -1,8 +1,8 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+DB_DIR="$APP_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 
@@ -41,7 +41,7 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 						SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 						ADD_TO_SENT=$(sqlite3 "$DB_DIR/checkins-sent.db" "INSERT INTO sent (sent_at, filename) VALUES ($SENT_AT_EPOCH, '$QUEUE_ENTRY_FILENAME');";)
 
-				  	$SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY" "$FILENAME_TIMESTAMP_FORMAT"
+				  	$APP_DIR/checkin.sh "$QUEUE_ENTRY" "$FILENAME_TIMESTAMP_FORMAT"
 
 				  else
 

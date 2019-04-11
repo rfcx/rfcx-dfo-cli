@@ -1,9 +1,9 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
-LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
-PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
+LOGS_DIR="$APP_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
+PRIVATE_DIR="$APP_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
 # This script can be used to create cron entries
 
@@ -26,7 +26,7 @@ if [ "$SCRIPT_NAME" = "triggerd" ]; then
 fi
 
 
-if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
+if [ -f "$APP_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 	if [ ! -f "$PRIVATE_DIR/cronjob_$SCRIPT_ID" ]; then 
 		
@@ -36,7 +36,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 		if [ "$ALLOW_SET_CRONTAB" = "y" ]; then
 
-			CRONJOB_EXEC="$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh $PARAM1 $PARAM2 $PARAM3 $PARAM4 >> $LOGFILEPATH"
+			CRONJOB_EXEC="$APP_DIR/${SCRIPT_NAME/-//}.sh $PARAM1 $PARAM2 $PARAM3 $PARAM4 >> $LOGFILEPATH"
 
 			CRON_USER=$(whoami)
 

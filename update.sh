@@ -1,30 +1,30 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
-PRIVATE_DIR="$SCRIPT_DIR/.private"
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+TMP_DIR="$APP_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
+PRIVATE_DIR="$APP_DIR/.private"
 
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 NOW=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
-if [ ! -d "$SCRIPT_DIR/.git" ]; then 
+if [ ! -d "$APP_DIR/.git" ]; then 
 
-	$SCRIPT_DIR/utils/upgrade.sh "checkin"
-	$SCRIPT_DIR/utils/upgrade.sh "queue"
-	$SCRIPT_DIR/utils/upgrade.sh "setup"
-	$SCRIPT_DIR/utils/upgrade.sh "trigger_checkin_from_queue"
-	$SCRIPT_DIR/utils/upgrade.sh "trigger_queue_from_inotify"
-	$SCRIPT_DIR/utils/upgrade.sh "trigger_queue_from_directory"
-	$SCRIPT_DIR/utils/upgrade.sh "triggerd"
-	$SCRIPT_DIR/utils/upgrade.sh "update"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-database_init"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-json_parse"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-log_archive"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-stdin"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
+	$APP_DIR/utils/upgrade.sh "checkin"
+	$APP_DIR/utils/upgrade.sh "queue"
+	$APP_DIR/utils/upgrade.sh "setup"
+	$APP_DIR/utils/upgrade.sh "trigger_checkin_from_queue"
+	$APP_DIR/utils/upgrade.sh "trigger_queue_from_inotify"
+	$APP_DIR/utils/upgrade.sh "trigger_queue_from_directory"
+	$APP_DIR/utils/upgrade.sh "triggerd"
+	$APP_DIR/utils/upgrade.sh "update"
+	$APP_DIR/utils/upgrade.sh "utils-crontab"
+	$APP_DIR/utils/upgrade.sh "utils-database_init"
+	$APP_DIR/utils/upgrade.sh "utils-json_parse"
+	$APP_DIR/utils/upgrade.sh "utils-log_archive"
+	$APP_DIR/utils/upgrade.sh "utils-stdin"
+	$APP_DIR/utils/upgrade.sh "utils-upgrade"
+	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
 
 else
 
@@ -46,7 +46,7 @@ if [ -f "$PRIVATE_DIR/hostname" ]; then
 fi
 
 # log archive check
-$SCRIPT_DIR/utils/log_archive.sh
+$APP_DIR/utils/log_archive.sh
 
 if [ ! -f "$PRIVATE_DIR/software_version" ]; then 
 	SOFTWARE_VERSION="0.1.0"

@@ -1,8 +1,8 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
-TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
+TMP_DIR="$APP_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 
 # This script checks GitHub for new script versions and upgrades them
 
@@ -13,10 +13,10 @@ chmod a+x "$TMP_DIR/_$SCRIPT_NAME.sh";
 
 NEW_DIGEST=$(openssl dgst -sha1 "$TMP_DIR/_$SCRIPT_NAME.sh" | grep 'SHA1(' | cut -d'=' -f 2 | cut -d' ' -f 2)
 
-SCRIPT_FILEPATH="$SCRIPT_DIR/${SCRIPT_NAME//-//}.sh"
+SCRIPT_FILEPATH="$APP_DIR/${SCRIPT_NAME//-//}.sh"
 
-SCRIPT_DIR=$(dirname "$SCRIPT_FILEPATH")
-if [ ! -d $SCRIPT_DIR ]; then mkdir -p $SCRIPT_DIR; fi;
+APP_DIR=$(dirname "$SCRIPT_FILEPATH")
+if [ ! -d $APP_DIR ]; then mkdir -p $APP_DIR; fi;
 
 OLD_DIGEST="_"
 if [ -f "$SCRIPT_FILEPATH" ]; then
