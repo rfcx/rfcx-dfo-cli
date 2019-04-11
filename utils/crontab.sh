@@ -26,13 +26,11 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_ID" ]; then 
 		
-		echo ""; echo " - "
+		echo " - "
 		read -p " - Would you like to set a recurring cron job for '$SCRIPT_NAME'? (y/n): " -n 1 -r
 		ALLOW_SET_CRONTAB="${REPLY}";
 
 		CRON_USER=$(whoami)
-
-		echo ""; echo " - "
 
 		if [ "$ALLOW_SET_CRONTAB" = "y" ]; then
 

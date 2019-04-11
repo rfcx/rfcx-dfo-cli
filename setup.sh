@@ -91,7 +91,7 @@ $SCRIPT_DIR/utils/database_init.sh "checkins-complete"
 if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
 	$SCRIPT_DIR/utils/crontab.sh "update" 20
 	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60
-	# $SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/home/ec2-user/audio-dir-new/" "wav"
+	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
 fi
 
 echo " - "
