@@ -25,7 +25,7 @@ else
 
 	FILEPATH_ORIG=$1
 	FILENAME_TIMESTAMP_FORMAT=$2
-	echo "************ $FILENAME_TIMESTAMP_FORMAT"
+	echo "************ $FILENAME_TIMESTAMP_FORMAT ***"
 
 	FILENAME_ORIG=$(basename -- "$FILEPATH_ORIG")
 
