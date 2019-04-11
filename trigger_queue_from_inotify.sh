@@ -10,7 +10,11 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 	
 	REGEX_FILTER=".*\.$TARGET_FILETYPE$"
 
-	inotifywait --event moved_to --format "%w%f" "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | { read FILENAME; echo $FILENAME; } # $SCRIPT_DIR/queue.sh $FILENAME #$SCRIPT_DIR/stdin.sh "queue"
+	for i in {1..10}
+	do
+		inotifywait --event moved_to --format "%w%f" "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/stdin.sh "queue"
+		echo " - "
+	done
 
 else
 
