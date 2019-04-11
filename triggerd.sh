@@ -12,7 +12,7 @@ PARAM_2=$4
 
 $SCRIPT_DIR/trigger_$TRIGGER_SCRIPT_NAME.sh "$PARAM_1" "$PARAM_2" &
 PID=$!
-echo " - Sending '$TRIGGER_SCRIPT_NAME' into background. ($PID)"
+echo " - Sending '$TRIGGER_SCRIPT_NAME' into background. (Process ID $PID)"
 echo " - Process will be killed if it runs longer than $TIMEOUT seconds."
 
 sleep $TIMEOUT
