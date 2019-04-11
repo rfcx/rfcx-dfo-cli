@@ -19,13 +19,14 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 
 		ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/checkins-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);";)
 
+		echo " - Added to Checkin queue..."
+
 		VERIFY_QUEUE_ENTRY=$(sqlite3 "$DB_DIR/checkins-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
 
 		if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
-			echo " - ...was SUCCESSFULLY added to the queue..."
+			echo " - ...and verified."
 		else
-			echo " - ...could NOT be added to queue..."
-			echo " - Specific error unknown..."
+			echo " - ...though it could not be verified."
 		fi
 
 	else
