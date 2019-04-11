@@ -33,7 +33,7 @@ else
 	if [ "$CODEC_ORIG" = "wav" ]; then CODEC_FINAL="flac"; else CODEC_FINAL="$CODEC_ORIG"; fi;
 
 	echo " - ";
-	echo " - Guardian: $GUARDIAN_GUID - Audio: $FILENAME_ORIG";
+	echo " - Audio: $FILENAME_ORIG (Guardian: $GUARDIAN_GUID)";
 	
 	STR_OFFSET_YEAR=${FILENAME_TIMESTAMP_FORMAT/\%Y*/}; OFFSET_YEAR=${#STR_OFFSET_YEAR};
 	STR_OFFSET_MONTH=${FILENAME_TIMESTAMP_FORMAT/\%m*/}; OFFSET_MONTH=${#STR_OFFSET_MONTH};
@@ -107,7 +107,7 @@ else
 			
 			# add/remove entries from local databases
 			if [ -f "$DB_DIR/queue-complete.db" ]; then
-				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '$CHECKIN_GUID', '$AUDIO_GUID', $CHECKIN_LATENCY);";)
+				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '$AUDIO_GUID', '$CHECKIN_GUID', $CHECKIN_LATENCY);";)
 				if [ -f "$DB_DIR/queue-sent.db" ]; then
 					REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
 				fi
