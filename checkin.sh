@@ -22,9 +22,10 @@ else
 	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guid";`;
 	GUARDIAN_TOKEN=`cat "$PRIVATE_DIR/token";`;
 	API_HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
-	FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/filename_timestamp_format";`;
 
 	FILEPATH_ORIG=$1
+	FILENAME_TIMESTAMP_FORMAT=$2
+
 	FILENAME_ORIG=$(basename -- "$FILEPATH_ORIG")
 
 	CODEC_ORIG=$(echo $FILENAME_ORIG | rev | cut -d'.' -f 1 | rev | tr '[:upper:]' '[:lower:]')

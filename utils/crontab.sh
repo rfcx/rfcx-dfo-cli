@@ -11,16 +11,16 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRI
 SCRIPT_NAME=$1
 CRON_LOOP=$2
 
-EXEC_PARAM_1=$3
-EXEC_PARAM_2=$4
-EXEC_PARAM_3=$5
-EXEC_PARAM_4=$6
+PARAM1=$3
+PARAM2=$4
+PARAM3=$5
+PARAM4=$6
 
 LOGFILEPATH="$LOGS_DIR/$SCRIPT_NAME.log";
-if [ "$SCRIPT_NAME" = "triggerd" ]; then LOGFILEPATH="$LOGS_DIR/$EXEC_PARAM_1.log"; fi;
+if [ "$SCRIPT_NAME" = "triggerd" ]; then LOGFILEPATH="$LOGS_DIR/$PARAM1.log"; fi;
 
 SCRIPT_ID="$SCRIPT_NAME";
-if [ "$SCRIPT_NAME" = "triggerd" ]; then SCRIPT_ID="$SCRIPT_NAME_$EXEC_PARAM_1"; fi;
+if [ "$SCRIPT_NAME" = "triggerd" ]; then SCRIPT_ID="$SCRIPT_NAME_$PARAM1"; fi;
 
 if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
@@ -30,11 +30,11 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 		read -p " - Would you like to set a recurring cron job for '$SCRIPT_ID'? (y/n): " -n 1 -r
 		ALLOW_SET_CRONTAB="${REPLY}";
 
-		CRON_USER=$(whoami)
-
 		if [ "$ALLOW_SET_CRONTAB" = "y" ]; then
 
-			CRONJOB_EXEC="$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh $EXEC_PARAM_1 $EXEC_PARAM_2 $EXEC_PARAM_3 $EXEC_PARAM_4 >> $LOGFILEPATH"
+			CRONJOB_EXEC="$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh $PARAM1 $PARAM2 $PARAM3 $PARAM4 >> $LOGFILEPATH"
+
+			CRON_USER=$(whoami)
 
 			echo -e "$(sudo crontab -u $CRON_USER -l)\n*/$CRON_LOOP * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRON_USER - 
 

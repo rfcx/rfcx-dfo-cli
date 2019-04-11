@@ -37,17 +37,18 @@ else
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 fi
 
-if [ ! -f "$PRIVATE_DIR/filename_timestamp_format" ]; then 
-	FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
-	echo "$FILENAME_TIMESTAMP_FORMAT" > "$PRIVATE_DIR/filename_timestamp_format"
-else
-	FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/filename_timestamp_format";`;
-fi
+# if [ ! -f "$PRIVATE_DIR/filename_timestamp_format" ]; then 
+# 	FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
+# 	echo "$FILENAME_TIMESTAMP_FORMAT" > "$PRIVATE_DIR/filename_timestamp_format"
+# else
+# 	FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/filename_timestamp_format";`;
+# fi
+
 
 echo " - Guardian: $GUID"
 echo " - Token: [secret]"
 echo " - RFCx API: $HOSTNAME"
-echo " - Filename Timestamp Format: '$FILENAME_TIMESTAMP_FORMAT'"
+# echo " - Filename Timestamp Format: '$FILENAME_TIMESTAMP_FORMAT'"
 
 
 if [ ! -f "$PRIVATE_DIR/registered" ]; then 
@@ -89,7 +90,7 @@ $SCRIPT_DIR/utils/database_init.sh "checkins-complete"
 # set cron jobs
 if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
 	$SCRIPT_DIR/utils/crontab.sh "update" 20
-	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60
+	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 "SCW1840_%Y%Y%m%d_%H%M%S"
 	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
 fi
 
