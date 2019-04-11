@@ -37,18 +37,10 @@ else
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
 fi
 
-# if [ ! -f "$PRIVATE_DIR/filename_timestamp_format" ]; then 
-# 	FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
-# 	echo "$FILENAME_TIMESTAMP_FORMAT" > "$PRIVATE_DIR/filename_timestamp_format"
-# else
-# 	FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/filename_timestamp_format";`;
-# fi
-
 
 echo " - Guardian: $GUID"
 echo " - Token: [secret]"
 echo " - RFCx API: $HOSTNAME"
-# echo " - Filename Timestamp Format: '$FILENAME_TIMESTAMP_FORMAT'"
 
 
 if [ ! -f "$PRIVATE_DIR/registered" ]; then 
