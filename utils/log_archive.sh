@@ -12,7 +12,7 @@ echo " - We archive log files here, if they're getting too big..."
 
 for LOG_FILEPATH in $LOGS_DIR/*.log; do
 
-	LOG_FILESIZE=$(stat $GNU_STAT_FLAG "$LOG_FILEPATH")
+	LOG_FILESIZE=$(($(($(stat $GNU_STAT_FLAG "$LOG_FILEPATH")))/1024))
 	echo " - $LOG_FILEPATH - $LOG_FILESIZE"
 
 done
