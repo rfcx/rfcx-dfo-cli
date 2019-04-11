@@ -2,7 +2,6 @@
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
-TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
@@ -29,7 +28,7 @@ fi
 
 if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
-	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_ID" ]; then 
+	if [ ! -f "$PRIVATE_DIR/cronjob_$SCRIPT_ID" ]; then 
 		
 		echo " - "
 		read -p " - Would you like to set a recurring cron job for '$SCRIPT_ID'? (y/n): " -n 1 -r
@@ -43,17 +42,17 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 			echo -e "$(sudo crontab -u $CRON_USER -l)\n*/$CRON_LOOP * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRON_USER - 
 
-			echo "'$SCRIPT_ID' script, by user '$CRON_USER', repeats every $CRON_LOOP minutes" > "$PRIVATE_DIR/crontab_$SCRIPT_ID"
+			echo "'$SCRIPT_ID' script, by user '$CRON_USER', repeats every $CRON_LOOP minutes\n$CRONJOB_EXEC" > "$PRIVATE_DIR/cronjob_$SCRIPT_ID"
 
 		fi
 
 	else
 
-		CRON_CONFIG=`cat "$PRIVATE_DIR/crontab_$SCRIPT_NAME";`;
+		CRON_CONFIG=`cat "$PRIVATE_DIR/cronjob_$SCRIPT_NAME";`;
 
 		echo ""; 
 		echo " - cron job has already been set for '$SCRIPT_ID' script"
-		echo " - cron config: $CRON_CONFIG"
+		# echo " - cron config: $CRON_CONFIG"
 
 	fi
 
