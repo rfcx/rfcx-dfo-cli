@@ -40,7 +40,7 @@ if [ -f "$PRIVATE_DIR/hostname" ]; then
 	
 	echo " - ";
 	echo " - Sending Diagnostic CheckIn to $HOSTNAME..."
-	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater&version=0.4.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
+	curl -s -o /dev/null -X GET "$HOSTNAME/v1/guardians/$GUID/software/all?role=updater-cli&version=0.1.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUID" -H "x-auth-token: $TOKEN";	
 
 fi
 
