@@ -19,4 +19,5 @@ sqlite3
 
 
 `rm -f *.sh; rm -rf logs tmp databases utils .private;`
+
 `wget -q -O setup.sh https://rf.cx/guardian-cli && chmod a+x setup.sh && ./setup.sh;`
