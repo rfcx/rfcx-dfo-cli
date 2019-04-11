@@ -9,7 +9,7 @@ TABLE_NAME=$1
 QUERY_CREATE="";
 
 if [ "$TABLE_NAME" = "checkins-queued" ]; then 
-	QUERY_CREATE="CREATE TABLE queued(queued_at INTEGER, filepath TEXT, attempts INTEGER)";
+	QUERY_CREATE="CREATE TABLE queued(queued_at INTEGER, filepath TEXT UNIQUE, attempts INTEGER)";
 fi
 
 if [ "$TABLE_NAME" = "checkins-sent" ]; then 
