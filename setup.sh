@@ -29,9 +29,13 @@ if [ ! -f "$PRIVATE_DIR/guid" ]; then
 	HOSTNAME="https://api.rfcx.org"
 	echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
 
+	FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
+	echo "$FILENAME_TIMESTAMP_FORMAT" > "$PRIVATE_DIR/filename_timestamp_format"
+
 	echo " - Guardian: $GUID"
 	echo " - Token: [secret]"
 	echo " - RFCx API: $HOSTNAME"
+	echo " - Filename Timestamp Format: '$FILENAME_TIMESTAMP_FORMAT'"
 	echo " - "
 
 else
@@ -39,12 +43,14 @@ else
 	GUID=`cat "$PRIVATE_DIR/guid";`;
 	TOKEN=`cat "$PRIVATE_DIR/token";`;
 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
+	FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/filename_timestamp_format";`;
 
 	echo " - This Guardian has previously been setup"
 	echo " - "
 	echo " - Guardian: $GUID"
 	echo " - Token: [secret]"
 	echo " - RFCx API: $HOSTNAME"
+	echo " - Filename Timestamp Format: '$FILENAME_TIMESTAMP_FORMAT'"
 	echo " - "
 
 fi

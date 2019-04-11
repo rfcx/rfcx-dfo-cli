@@ -7,8 +7,6 @@ LOGS_DIR="$SCRIPT_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
 DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"
 
-FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
-
 # Environmental Customizations
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"; fi;
@@ -24,6 +22,7 @@ else
 	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guid";`;
 	GUARDIAN_TOKEN=`cat "$PRIVATE_DIR/token";`;
 	API_HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
+	FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/filename_timestamp_format";`;
 
 	FILEPATH_ORIG=$1
 	FILENAME_ORIG=$(basename -- "$FILEPATH_ORIG")
