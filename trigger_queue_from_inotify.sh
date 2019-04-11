@@ -12,8 +12,8 @@ if [ -d "$TARGET_DIRECTORY" ]; then
 
 	for i in {1..60}
 	do
-		inotifywait --event moved_to --format "%w%f" "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/stdin.sh "queue"
-		echo " - "
+		inotifywait --event moved_to --format "%w%f" --timeout 10 "$TARGET_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $SCRIPT_DIR/utils/stdin.sh "queue"
+		# echo " - "
 	done
 
 else

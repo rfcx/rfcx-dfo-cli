@@ -11,18 +11,18 @@ NOW=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
 	$SCRIPT_DIR/utils/upgrade.sh "checkin"
-	$SCRIPT_DIR/utils/upgrade.sh "stdin"
-	$SCRIPT_DIR/utils/upgrade.sh "setup"
-	$SCRIPT_DIR/utils/upgrade.sh "update"
 	$SCRIPT_DIR/utils/upgrade.sh "queue"
+	$SCRIPT_DIR/utils/upgrade.sh "setup"
 	$SCRIPT_DIR/utils/upgrade.sh "trigger_checkin_from_queue"
 	$SCRIPT_DIR/utils/upgrade.sh "trigger_queue_from_inotify"
 	$SCRIPT_DIR/utils/upgrade.sh "trigger_queue_from_directory"
 	$SCRIPT_DIR/utils/upgrade.sh "triggerd"
+	$SCRIPT_DIR/utils/upgrade.sh "update"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
-	$SCRIPT_DIR/utils/upgrade.sh "utils-json_parse"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-database_init"
+	$SCRIPT_DIR/utils/upgrade.sh "utils-json_parse"
+	$SCRIPT_DIR/utils/upgrade.sh "utils-stdin"
+	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
 
 else
 
