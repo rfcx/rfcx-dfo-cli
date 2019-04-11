@@ -15,22 +15,39 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 		
 		QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $ROW_LIMIT;";)
 	
-		echo "$QUEUE_ENTRY_COUNT"
-		# IFS=$'\n'
+		# echo "$QUEUE_ENTRY_COUNT"
+		IFS=$'\n'
 
-		while read -r QUEUE_ENTRY; do
-		  
-		  if [ -f "$QUEUE_ENTRY" ]; then
+		CURRENT_ENTRY_ROW=0;
 
-		  	$SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY"
+		for QUEUE_ENTRY in $QUEUE_ENTRIES
+		do
+			CURRENT_ENTRY_ROW=$((CURRENT_ENTRY_ROW+1))
+
+			if [ -f "$QUEUE_ENTRY" ]; then
+
+		  	echo " - $CURRENT_ENTRY_ROW) $SCRIPT_DIR/checkin.sh $QUEUE_ENTRY"
 
 		  else
 
-		  	echo " - '$QUEUE_ENTRY' could not be found..."
+		  	echo " - '$QUEUE_ENTRY' could not be found on filesystem..."
 
 		  fi
+		done
 
-		done <<< "$QUEUE_ENTRIES"
+		# while read -r QUEUE_ENTRY; do
+		  
+		#   if [ -f "$QUEUE_ENTRY" ]; then
+
+		#   	$SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY"
+
+		#   else
+
+		#   	echo " - '$QUEUE_ENTRY' could not be found..."
+
+		#   fi
+
+		# done <<< "$QUEUE_ENTRIES"
 
 	else
 	echo " - Database '$DB_DIR/queue-sent.db' could not be found"
