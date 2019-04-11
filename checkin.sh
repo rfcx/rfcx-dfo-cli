@@ -32,7 +32,7 @@ else
 	
 	if [ "$CODEC_ORIG" = "wav" ]; then CODEC_FINAL="flac"; else CODEC_FINAL="$CODEC_ORIG"; fi;
 
-	echo " - ";
+	# echo " - ";
 	echo " - Audio: $FILENAME_ORIG (Pattern: $FILENAME_TIMESTAMP_FORMAT) (Guardian: $GUARDIAN_GUID)";
 	
 	STR_OFFSET_YEAR=${FILENAME_TIMESTAMP_FORMAT/\%Y*/}; OFFSET_YEAR=${#STR_OFFSET_YEAR};

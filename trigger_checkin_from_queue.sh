@@ -50,8 +50,8 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 				  fi
 				done
 
-			else
-				echo " - Queue is currently empty."
+			# else
+			# 	echo " - Queue is currently empty."
 			fi
 
 			sleep 5
