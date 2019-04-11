@@ -3,6 +3,7 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
+DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 PRIVATE_DIR="$SCRIPT_DIR/.private"
 
 FILENAME_TIMESTAMP_FORMAT="SCW1840_%Y%Y%m%d_%H%M%S"
@@ -94,15 +95,24 @@ else
 		# echo " - JSON (Encoded): $CHECKIN_JSON_ZIPPED"
 		echo " - ";
 
-		curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins"
+		EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $GUARDIAN_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins")
 		
+		# add/remove entries from local databases
+		if [ -f "$DB_DIR/queue-complete.db" ]; then
+			COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
+			ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '', '');";)
+			if [ -f "$DB_DIR/queue-sent.db" ]; then
+				REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filepath='$FILENAME_ORIG';";)
+			fi
+		fi
+
 		echo "";
 		echo " - ";
 
 	else
 
 		echo " - '$FILEPATH_ORIG' could not be found..."
-		
+
 	fi
 
 	# Post Cleanup
