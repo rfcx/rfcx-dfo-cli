@@ -13,6 +13,7 @@ CRON_LOOP=$2
 
 EXEC_PARAM_1=$3
 EXEC_PARAM_2=$4
+EXEC_PARAM_3=$5
 
 if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
@@ -28,7 +29,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 		if [ "$ALLOW_SET_CRONTAB" = "y" ]; then
 
-			CRONJOB_EXEC="$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh $EXEC_PARAM_1 $EXEC_PARAM_2 >> $LOGS_DIR/$SCRIPT_NAME.log"
+			CRONJOB_EXEC="$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh $EXEC_PARAM_1 $EXEC_PARAM_2 $EXEC_PARAM_3 >> $LOGS_DIR/$SCRIPT_NAME.log"
 
 			echo -e "$(sudo crontab -u $CRON_USER -l)\n*/$CRON_LOOP * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRON_USER - 
 
