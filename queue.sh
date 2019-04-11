@@ -21,13 +21,12 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 
 		echo " - Added to Checkin queue..."
 
-		VERIFY_QUEUE_ENTRY=$(sqlite3 "$DB_DIR/checkins-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
-
-		if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
-			echo " - ...and verified."
-		else
-			echo " - ...though it could not be verified."
-		fi
+		# VERIFY_QUEUE_ENTRY=$(sqlite3 -init <(echo .timeout 1000) "$DB_DIR/checkins-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
+		# if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
+		# 	echo " - ...and verified."
+		# else
+		# 	echo " - ...though it could not be verified."
+		# fi
 
 	else
 
