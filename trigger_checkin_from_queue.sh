@@ -15,14 +15,14 @@ if [ -f "$DB_DIR/queue-queued.db" ]; then
 		
 		if [ "$QUEUE_ENTRY_COUNT" -gt "0" ]; then
 
-			echo " - There are currently $QUEUE_ENTRY_COUNT items in the queue."
+			echo " - $QUEUE_ENTRY_COUNT item(s) currently in the queue."
 
 			# Only three checkins will be processed at a time...
 			if [ "$QUEUE_ENTRY_COUNT" -gt "3" ]; then QUEUE_ENTRY_COUNT=3; fi
 
 			QUEUE_ENTRIES=$(sqlite3 "$DB_DIR/queue-queued.db" "SELECT filepath FROM queued ORDER BY queued_at ASC LIMIT $QUEUE_ENTRY_COUNT;";)
 		
-			echo " - $QUEUE_ENTRY_COUNT items will be processed..."
+			echo " - $QUEUE_ENTRY_COUNT item(s) will be processed..."
 
 			IFS=$'\n'
 
