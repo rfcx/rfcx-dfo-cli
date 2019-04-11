@@ -88,8 +88,11 @@ fi
 # use 'upgrade' script to fetch 'update' script
 $SCRIPT_DIR/utils/upgrade.sh "update" && $SCRIPT_DIR/update.sh
 
-# use 'upgrade' script to fetch 'crontab' script
-$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
+echo " - "
+echo " - Creating database files, if they don't already exist..."
+$SCRIPT_DIR/utils/database_init.sh "checkins-queued"
+$SCRIPT_DIR/utils/database_init.sh "checkins-sent"
+$SCRIPT_DIR/utils/database_init.sh "checkins-complete"
 
 # set cron jobs
 if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
@@ -97,12 +100,6 @@ if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
 	$SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60
 	# $SCRIPT_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/home/ec2-user/audio-dir-new/" "wav"
 fi
-
-echo " - "
-echo " - Creating database files, if they don't already exist..."
-$SCRIPT_DIR/utils/database_init.sh "checkins-queued"
-$SCRIPT_DIR/utils/database_init.sh "checkins-sent"
-$SCRIPT_DIR/utils/database_init.sh "checkins-complete"
 
 echo " - "
 echo " - Setup: Complete"
