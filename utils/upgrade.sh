@@ -19,7 +19,7 @@ if [ -f "$SCRIPT_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 fi
 
 if [ "$NEW_DIGEST" = "$OLD_DIGEST" ]; then 
-	echo " - '$SCRIPT_NAME.sh' - No changes"
+	# echo " - '$SCRIPT_NAME.sh' - No changes"
 	if [ -f "$TMP_DIR/_$SCRIPT_NAME.sh" ]; then rm "$TMP_DIR/_$SCRIPT_NAME.sh"; fi
 else
 
