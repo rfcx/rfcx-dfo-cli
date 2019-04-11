@@ -45,19 +45,6 @@ if [ -f "$DB_DIR/checkins-queued.db" ]; then
 			  fi
 			done
 
-			# while read -r QUEUE_ENTRY; do
-			  
-			#   if [ -f "$QUEUE_ENTRY" ]; then
-
-			#   	$SCRIPT_DIR/checkin.sh "$QUEUE_ENTRY"
-
-			#   else
-
-			#   	echo " - '$QUEUE_ENTRY' could not be found..."
-
-			#   fi
-
-			# done <<< "$QUEUE_ENTRIES"
 		else
 			echo " - Queue is currently empty."
 		fi
