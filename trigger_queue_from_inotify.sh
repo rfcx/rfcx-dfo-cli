@@ -8,7 +8,9 @@ TARGET_FILETYPE=$2
 
 if [ -d "$TARGET_DIRECTORY" ]; then 
 	
-	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" | grep ".$TARGET_FILETYPE" | $SCRIPT_DIR/stdin.sh "queue"
+	REGEX_FILTER=".*\.$TARGET_FILETYPE$"
+
+	inotifywait --event moved_to --format "%w%f" --monitor "$TARGET_DIRECTORY" | grep "$REGEX_FILTER" | $SCRIPT_DIR/stdin.sh "queue"
 
 else
 
