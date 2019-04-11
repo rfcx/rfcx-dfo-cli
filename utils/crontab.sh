@@ -23,7 +23,6 @@ if [ "$SCRIPT_NAME" = "triggerd" ]; then
 	SCRIPT_ID="$SCRIPT_NAME_$PARAM1";
 	PARAM1="'$PARAM1'"
 	PARAM3="'$PARAM3'"
-	PARAM4="'$PARAM4'"
 fi
 
 
