@@ -25,6 +25,7 @@ SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 # CHECKIN_JSON+="\"queued_at\":$SENT_AT_EPOCH,"
 # CHECKIN_JSON+="\"measured_at\":$SENT_AT_EPOCH,"
 # CHECKIN_JSON+="\"software\":\"guardian-cli*0.1.0|updater-cli*0.1.0\","
+# CHECKIN_JSON+="\"battery\":\"$SENT_AT_EPOCH*100*0\","
 # CHECKIN_JSON+="\"queued_checkins\":\"1\","
 # CHECKIN_JSON+="\"skipped_checkins\":\"0\","
 # CHECKIN_JSON+="\"stashed_checkins\":\"0\""
