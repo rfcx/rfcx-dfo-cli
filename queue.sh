@@ -8,34 +8,37 @@ GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate";
 
 FILEPATH_ORIG=$1
 
-echo " - "
-echo " - File '$FILEPATH_ORIG'..."
+if [ ! -z "$FILEPATH_ORIG" -a "$FILEPATH_ORIG" != " " ]; then
 
-if [ -f "$DB_DIR/checkins-queued.db" ]; then
-	
-	if [ -f "$FILEPATH_ORIG" ]; then
+	# echo " - "
+	echo " - File '$FILEPATH_ORIG'..."
 
-		QUEUED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
+	if [ -f "$DB_DIR/checkins-queued.db" ]; then
+		
+		if [ -f "$FILEPATH_ORIG" ]; then
 
-		ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/checkins-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);";)
+			QUEUED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
-		echo " - Added to Checkin queue..."
+			ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/checkins-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);";)
 
-		# VERIFY_QUEUE_ENTRY=$(sqlite3 -init <(echo .timeout 1000) "$DB_DIR/checkins-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
-		# if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
-		# 	echo " - ...and verified."
-		# else
-		# 	echo " - ...though it could not be verified."
-		# fi
+			echo " - Added to Checkin queue..."
+
+			# VERIFY_QUEUE_ENTRY=$(sqlite3 -init <(echo .timeout 1000) "$DB_DIR/checkins-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
+			# if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
+			# 	echo " - ...and verified."
+			# else
+			# 	echo " - ...though it could not be verified."
+			# fi
+
+		else
+
+			echo " - ...could not be found on the filesystem and was NOT added to queue..."
+		
+		fi
 
 	else
-
-		echo " - ...could not be found on the filesystem and was NOT added to queue..."
-	
+		echo " - ...was NOT queued because database '$DB_DIR/checkins-queued.db' could not be found"
 	fi
-
-else
-	echo " - ...was NOT queued because database '$DB_DIR/checkins-queued.db' could not be found"
 fi
 
-echo " - "
+# echo " - "
