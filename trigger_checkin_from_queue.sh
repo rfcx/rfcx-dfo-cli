@@ -6,8 +6,6 @@ DB_DIR="$SCRIPT_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 
-echo " - "
-
 FILENAME_TIMESTAMP_FORMAT=$1
 
 MAX_BATCH_COUNT=3
