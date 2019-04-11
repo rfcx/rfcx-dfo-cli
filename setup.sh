@@ -88,7 +88,7 @@ $SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 
 # set cron jobs
 if [ -f "$SCRIPT_DIR/utils/crontab.sh" ]; then
-	$SCRIPT_DIR/utils/crontab.sh "update" 15
+	$SCRIPT_DIR/utils/crontab.sh "update" 20
 fi
 
 # Initialize checkin queue database files

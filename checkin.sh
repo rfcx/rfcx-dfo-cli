@@ -97,12 +97,15 @@ else
 		if [[ $EXEC_CHECKIN == *"checkin_id"* ]]; then
 
 			echo " - Success: $EXEC_CHECKIN";
+
+			CHECKIN_GUID=$(echo "$EXEC_CHECKIN" | grep -Eo '"checkin_id":.*?[^\\]"' | cut -d':' -f 2 | cut -d'"' -f 2);
+			AUDIO_GUID=$(echo "$EXEC_CHECKIN" | grep -Eo '"guid":.*?[^\\]"' | cut -d':' -f 2 | cut -d'"' -f 2);
 			
 			# add/remove entries from local databases
 			if [ -f "$DB_DIR/queue-complete.db" ]; then
 				COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 				CHECKIN_LATENCY=$(($COMPLETED_AT_EPOCH-$SENT_AT_EPOCH))
-				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '', '', $CHECKIN_LATENCY);";)
+				ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id, latency) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '$CHECKIN_GUID', '$AUDIO_GUID', $CHECKIN_LATENCY);";)
 				if [ -f "$DB_DIR/queue-sent.db" ]; then
 					REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
 				fi
