@@ -19,11 +19,9 @@ if [ ! -z "$FILEPATH_ORIG" -a "$FILEPATH_ORIG" != " " ]; then
 
 			QUEUED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
-			ADD_TO_QUEUE=$(sqlite3 -init <(echo .timeout 1000) "$DB_DIR/checkins-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);" 2> /dev/null;)
+			ADD_TO_QUEUE=$(sqlite3 "$DB_DIR/checkins-queued.db" "INSERT INTO queued (queued_at, filepath, attempts) VALUES ($QUEUED_AT_EPOCH, '$FILEPATH_ORIG', 0);" 2> /dev/null;)
 
 			echo " - Added to Checkin queue..."
-
-			sleep 1;
 
 			# VERIFY_QUEUE_ENTRY=$(sqlite3 -init <(echo .timeout 1000) "$DB_DIR/checkins-queued.db" "SELECT queued_at FROM queued WHERE filepath='$FILEPATH_ORIG';";)
 			# if [ "$VERIFY_QUEUE_ENTRY" = "$QUEUED_AT_EPOCH" ]; then 
