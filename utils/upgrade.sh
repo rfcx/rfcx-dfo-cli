@@ -5,8 +5,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
 TMP_DIR="$SCRIPT_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 
 # let's replace this with some dynamic logic below, based on parsing the incoming file paths
-UTILS_DIR="$SCRIPT_DIR/utils"; if [ ! -d $UTILS_DIR ]; then mkdir -p $UTILS_DIR; fi;
-UTILS_CHECKIN_DIR="$UTILS_DIR/checkin"; if [ ! -d $UTILS_CHECKIN_DIR ]; then mkdir -p $UTILS_CHECKIN_DIR; fi;
+# UTILS_DIR="$SCRIPT_DIR/utils"; if [ ! -d $UTILS_DIR ]; then mkdir -p $UTILS_DIR; fi;
+# UTILS_CHECKIN_DIR="$UTILS_DIR/checkin"; if [ ! -d $UTILS_CHECKIN_DIR ]; then mkdir -p $UTILS_CHECKIN_DIR; fi;
 
 # This script checks GitHub for new script versions and upgrades them
 
