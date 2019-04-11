@@ -47,3 +47,10 @@ fi
 # log archive check
 $SCRIPT_DIR/utils/log_archive.sh
 
+if [ ! -f "$PRIVATE_DIR/software_version" ]; then 
+	SOFTWARE_VERSION="0.1.0"
+	echo "$SOFTWARE_VERSION" > "$PRIVATE_DIR/software_version"
+else
+	SOFTWARE_VERSION=`cat "$PRIVATE_DIR/software_version";`;
+fi
+
