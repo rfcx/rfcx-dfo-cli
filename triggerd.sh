@@ -13,6 +13,7 @@ PARAM_2=$3
 
 $SCRIPT_DIR/trigger_$TRIGGER_SCRIPT_NAME.sh "$PARAM_1" "$PARAM_2" &
 PID=$!
+echo " - Sending '$TRIGGER_SCRIPT_NAME' into background. ($PID)"
 
 sleep $SCRIPT_EXECUTION_DURATION
 KILL=$(kill -9 $PID)
