@@ -22,7 +22,7 @@ if [ "$SCRIPT_NAME" = "triggerd" ]; then
 	LOGFILEPATH="$LOGS_DIR/$PARAM1.log";
 	SCRIPT_ID="$SCRIPT_NAME_$PARAM1";
 	PARAM1="\"$PARAM1\""
-	PARAM3="\"$PARAM3\""
+	PARAM3="\"${PARAM3//\%/\\\%}\""
 	PARAM4="\"$PARAM4\""
 fi
 
