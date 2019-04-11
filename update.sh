@@ -8,8 +8,6 @@ PRIVATE_DIR="$SCRIPT_DIR/.private"
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 NOW=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
-echo " - ";
-
 if [ ! -d "$SCRIPT_DIR/.git" ]; then 
 
 	$SCRIPT_DIR/utils/upgrade.sh "checkin"

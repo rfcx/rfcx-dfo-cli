@@ -48,7 +48,6 @@ echo " - Guardian: $GUID"
 echo " - Token: [secret]"
 echo " - RFCx API: $HOSTNAME"
 echo " - Filename Timestamp Format: '$FILENAME_TIMESTAMP_FORMAT'"
-echo " - "
 
 
 if [ ! -f "$PRIVATE_DIR/registered" ]; then 
