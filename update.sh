@@ -19,6 +19,7 @@ if [ ! -d "$SCRIPT_DIR/.git" ]; then
 	$SCRIPT_DIR/utils/upgrade.sh "queue"
 	$SCRIPT_DIR/utils/upgrade.sh "trigger_checkin_from_queue"
 	$SCRIPT_DIR/utils/upgrade.sh "trigger_queue_from_inotify"
+	$SCRIPT_DIR/utils/upgrade.sh "triggerd"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-crontab"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-upgrade"
 	$SCRIPT_DIR/utils/upgrade.sh "utils-json_parse"
