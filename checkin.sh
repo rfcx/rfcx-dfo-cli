@@ -104,7 +104,7 @@ else
 			COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s')*1000))
 			ADD_TO_COMPLETE=$(sqlite3 "$DB_DIR/queue-complete.db" "INSERT INTO complete (sent_at, completed_at, filename, audio_id, checkin_id) VALUES ($SENT_AT_EPOCH, $COMPLETED_AT_EPOCH, '$FILENAME_ORIG', '', '');";)
 			if [ -f "$DB_DIR/queue-sent.db" ]; then
-				REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filepath='$FILENAME_ORIG';";)
+				REMOVE_FROM_SENT=$(sqlite3 "$DB_DIR/queue-sent.db" "DELETE FROM sent WHERE filename='$FILENAME_ORIG';";)
 			fi
 		fi
 
