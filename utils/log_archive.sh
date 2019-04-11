@@ -11,8 +11,7 @@ GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"
 echo " - "
 echo " - Running Logfile maintenance..."
 
-# MAX_FILESIZE_KB=$((5*1024))
-MAX_FILESIZE_KB=$((1*140))
+MAX_FILESIZE_KB=$((5*1024))
 
 for LOG_FILEPATH in $LOGS_DIR/*.log; do
 
