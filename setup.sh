@@ -10,21 +10,25 @@ echo " - "
 
 if [ -d "$APP_DIR/.git" ]; then 
 
-	echo " - Blocking update process because this is a Git repository.";
+	echo " - Blocking 'setup' script because this is a Git repository.";
 	echo " - "
 
 else
 
-	# Download 'upgrade' script
+	##############################
+	## Download 'upgrade' script (if it doesn't already exist)
 	if [ ! -f "$UTILS_DIR/upgrade.sh" ]; then
+		echo " - Downloading 'upgrade' script"
 		DOWNLOAD=$(wget -q -O "$UTILS_DIR/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/upgrade.sh");
 		chmod a+x "$UTILS_DIR/upgrade.sh";
 	fi
+	##############################
 
-	echo " - Running Update script"
-	echo " - "
+	##############################
+	echo " - Downloading and running latest 'update' script"
 	$UTILS_DIR/upgrade.sh "update" && $APP_DIR/update.sh
 	echo " - "
+	##############################
 
 	##############################
 	## Initialize Guardian credentials (if necessary)

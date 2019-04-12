@@ -7,10 +7,14 @@ PRIVATE_DIR="$APP_DIR/.private"
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 NOW=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
+echo " - "
+echo " - Update: Started"
+echo " - "
+
 if [ -d "$APP_DIR/.git" ]; then 
 
-	echo " - "
 	echo " - Blocking update process because this is a Git repository.";
+	echo " - "
 
 else
 
@@ -48,15 +52,18 @@ $APP_DIR/utils/maintenance/logfile_archive.sh
 
 
 
-##############################
-# let's remove this section ASAP
-if [ ! -f "$PRIVATE_DIR/api_token" ]; then cp "$PRIVATE_DIR/token" "$PRIVATE_DIR/api_token"; fi;
-if [ ! -f "$PRIVATE_DIR/api_hostname" ]; then cp "$PRIVATE_DIR/hostname" "$PRIVATE_DIR/api_hostname"; fi;
-if [ ! -f "$PRIVATE_DIR/api_registered" ]; then cp "$PRIVATE_DIR/registered" "$PRIVATE_DIR/api_registered"; fi;
-if [ ! -f "$PRIVATE_DIR/guardian_guid" ]; then cp "$PRIVATE_DIR/guid" "$PRIVATE_DIR/guardian_guid"; fi;
-##############################
+# ##############################
+# # let's remove this section ASAP
+# if [ ! -f "$PRIVATE_DIR/api_token" ]; then cp "$PRIVATE_DIR/token" "$PRIVATE_DIR/api_token"; fi;
+# if [ ! -f "$PRIVATE_DIR/api_hostname" ]; then cp "$PRIVATE_DIR/hostname" "$PRIVATE_DIR/api_hostname"; fi;
+# if [ ! -f "$PRIVATE_DIR/api_registered" ]; then cp "$PRIVATE_DIR/registered" "$PRIVATE_DIR/api_registered"; fi;
+# if [ ! -f "$PRIVATE_DIR/guardian_guid" ]; then cp "$PRIVATE_DIR/guid" "$PRIVATE_DIR/guardian_guid"; fi;
+# ##############################
 
 
+echo " - "
+echo " - Update: Complete"
+echo " - "
 
 
 
