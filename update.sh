@@ -9,6 +9,7 @@ NOW=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 
 if [ -d "$APP_DIR/.git" ]; then 
 
+	echo " - "
 	echo " - Blocking update process because this is a Git repository.";
 
 else
@@ -28,7 +29,7 @@ else
 	$APP_DIR/utils/upgrade.sh "utils-stdin"
 	$APP_DIR/utils/upgrade.sh "utils-upgrade"
 	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
-	# $APP_DIR/utils/upgrade.sh "utils-setup-create_credentials"
+	$APP_DIR/utils/upgrade.sh "utils-setup-create_credentials"
 
 fi
 

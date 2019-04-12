@@ -11,38 +11,8 @@ echo " - "
 echo " - Setup: Launched"
 echo " - "
 
-# if [ ! -f "$PRIVATE_DIR/guid" ]; then 
-
-# 	echo " - Script is running for the first time..."
-# 	echo " - Generating new Guardian guid and token."
-# 	echo " - "
-
-# 	CHAR_OPTIONS=abcdef0123456789
-# 	GUARDIAN_GUID=`for i in {1..12} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
-
-# 	CHAR_OPTIONS=abcdefghijklmnopqrstuvwxyz0123456789
-# 	API_TOKEN=`for i in {1..40} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
-
-# 	echo "$GUARDIAN_GUID" > "$PRIVATE_DIR/guid"
-# 	echo "$API_TOKEN" > "$PRIVATE_DIR/token"
-# else
-# 	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guid";`;
-# 	API_TOKEN=`cat "$PRIVATE_DIR/token";`;
-# fi
-
-# if [ ! -f "$PRIVATE_DIR/hostname" ]; then 
-# 	HOSTNAME="https://api.rfcx.org"
-# 	echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
-# else
-# 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
-# fi
-
-# if [ ! -f "$PRIVATE_DIR/software_version" ]; then 
-# 	SOFTWARE_VERSION="0.1.0"
-# 	echo "$SOFTWARE_VERSION" > "$PRIVATE_DIR/software_version"
-# else
-# 	SOFTWARE_VERSION=`cat "$PRIVATE_DIR/software_version";`;
-# fi
+# If necessary, initialize Guardian credentials
+$APP_DIR/utils/setup/create_credentials.sh
 
 GUARDIAN_GUID=`cat "$PRIVATE_DIR/guardian_guid";`;
 API_TOKEN=`cat "$PRIVATE_DIR/api_token";`;
@@ -52,49 +22,53 @@ echo " - Guardian: $GUARDIAN_GUID"
 echo " - Token: [secret]"
 echo " - RFCx API: $API_HOSTNAME"
 
-
+##############################
+# let's move this into a dedicated utility script
 if [ ! -f "$PRIVATE_DIR/api_registered" ]; then 
-
 	echo " - This Guardian must be registered with the RFCx API (see below)..."
 	echo " - "
-
 	read -p " - Please provide a Registration Token (8 digit): " -n 8 -r
 	REGISTRATION_TOKEN="${REPLY}";
-
 	REGISTER=$(curl -s -X POST "$API_HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUARDIAN_GUID&token=$API_TOKEN")
-
 	echo ""; echo " - "
 	echo " - $REGISTER"
-
 	if [ ! "$REGISTER" = "Unauthorized" ]; then
-		
 		echo "$REGISTER" > "$PRIVATE_DIR/api_registered"
+	fi
+fi
+##############################
 
+
+if [ -d "$APP_DIR/.git" ]; then 
+
+	echo " - "
+	echo " - Blocking update process because this is a Git repository.";
+
+else
+
+	# Download 'upgrade' script
+	if [ ! -f "$APP_DIR/utils/upgrade.sh" ]; then
+		DOWNLOAD=$(wget -q -O "$APP_DIR/utils/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/upgrade.sh");
+		chmod a+x "$APP_DIR/utils/upgrade.sh";
 	fi
 
-fi
+	echo " - "
+	echo " - Running Update script"
+	$APP_DIR/utils/upgrade.sh "update" && $APP_DIR/update.sh
 
-# Download 'upgrade' script
-if [ ! -f "$APP_DIR/utils/upgrade.sh" ]; then
-	DOWNLOAD=$(wget -q -O "$APP_DIR/utils/upgrade.sh" "https://raw.githubusercontent.com/rfcx/rfcx-guardian-cli/master/utils/upgrade.sh");
-	chmod a+x "$APP_DIR/utils/upgrade.sh";
-fi
+	echo " - "
+	echo " - Creating database files, if they don't already exist..."
+	$APP_DIR/utils/database_init.sh "checkins-queued"
+	$APP_DIR/utils/database_init.sh "checkins-sent"
+	$APP_DIR/utils/database_init.sh "checkins-complete"
 
-echo " - "
-echo " - Running Update script"
-$APP_DIR/utils/upgrade.sh "update" && $APP_DIR/update.sh
+	# set cron jobs
+	if [ -f "$APP_DIR/utils/crontab.sh" ]; then
+		$APP_DIR/utils/crontab.sh "update" 20
+		$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 "SCW1840_%Y%Y%m%d_%H%M%S"
+		$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
+	fi
 
-echo " - "
-echo " - Creating database files, if they don't already exist..."
-$APP_DIR/utils/database_init.sh "checkins-queued"
-$APP_DIR/utils/database_init.sh "checkins-sent"
-$APP_DIR/utils/database_init.sh "checkins-complete"
-
-# set cron jobs
-if [ -f "$APP_DIR/utils/crontab.sh" ]; then
-	$APP_DIR/utils/crontab.sh "update" 20
-	$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 "SCW1840_%Y%Y%m%d_%H%M%S"
-	$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
 fi
 
 
