@@ -28,7 +28,7 @@ fi
 
 if [ -f "$APP_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
-	if [ ! -f "$PRIVATE_DIR/cronjob_$SCRIPT_ID" ]; then 
+	if [ ! -f "$PRIVATE_DIR/crontab_$SCRIPT_ID" ]; then 
 		
 		echo " - "
 		read -p " - Would you like to set a recurring cron job for '$SCRIPT_ID'? (y/n): " -n 1 -r
@@ -42,13 +42,13 @@ if [ -f "$APP_DIR/${SCRIPT_NAME/-//}.sh" ]; then
 
 			echo -e "$(sudo crontab -u $CRON_USER -l)\n*/$CRON_LOOP * * * * $CRONJOB_EXEC 2>&1" | sudo crontab -u $CRON_USER - 
 
-			echo "'$SCRIPT_ID' script, by user '$CRON_USER', repeats every $CRON_LOOP minutes\n$CRONJOB_EXEC" > "$PRIVATE_DIR/cronjob_$SCRIPT_ID"
+			echo "'$SCRIPT_ID' script, by user '$CRON_USER', repeats every $CRON_LOOP minutes\n$CRONJOB_EXEC" > "$PRIVATE_DIR/crontab_$SCRIPT_ID"
 
 		fi
 
 	else
 
-		CRON_CONFIG=`cat "$PRIVATE_DIR/cronjob_$SCRIPT_NAME";`;
+		CRON_CONFIG=`cat "$PRIVATE_DIR/crontab_$SCRIPT_NAME";`;
 
 		echo ""; 
 		echo " - cron job has already been set for '$SCRIPT_ID' script"

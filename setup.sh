@@ -11,43 +11,46 @@ echo " - "
 echo " - Setup: Launched"
 echo " - "
 
-if [ ! -f "$PRIVATE_DIR/guid" ]; then 
+# if [ ! -f "$PRIVATE_DIR/guid" ]; then 
 
-	echo " - Script is running for the first time..."
-	echo " - Generating new Guardian guid and token."
-	echo " - "
+# 	echo " - Script is running for the first time..."
+# 	echo " - Generating new Guardian guid and token."
+# 	echo " - "
 
-	CHAR_OPTIONS=abcdef0123456789
-	GUID=`for i in {1..12} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
+# 	CHAR_OPTIONS=abcdef0123456789
+# 	GUARDIAN_GUID=`for i in {1..12} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
 
-	CHAR_OPTIONS=abcdefghijklmnopqrstuvwxyz0123456789
-	TOKEN=`for i in {1..40} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
+# 	CHAR_OPTIONS=abcdefghijklmnopqrstuvwxyz0123456789
+# 	API_TOKEN=`for i in {1..40} ; do echo -n "${CHAR_OPTIONS:RANDOM%${#CHAR_OPTIONS}:1}"; done;`
 
-	echo "$GUID" > "$PRIVATE_DIR/guid"
-	echo "$TOKEN" > "$PRIVATE_DIR/token"
-else
-	GUID=`cat "$PRIVATE_DIR/guid";`;
-	TOKEN=`cat "$PRIVATE_DIR/token";`;
-fi
+# 	echo "$GUARDIAN_GUID" > "$PRIVATE_DIR/guid"
+# 	echo "$API_TOKEN" > "$PRIVATE_DIR/token"
+# else
+# 	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guid";`;
+# 	API_TOKEN=`cat "$PRIVATE_DIR/token";`;
+# fi
 
-if [ ! -f "$PRIVATE_DIR/hostname" ]; then 
-	HOSTNAME="https://api.rfcx.org"
-	echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
-else
-	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
-fi
+# if [ ! -f "$PRIVATE_DIR/hostname" ]; then 
+# 	HOSTNAME="https://api.rfcx.org"
+# 	echo "$HOSTNAME" > "$PRIVATE_DIR/hostname"
+# else
+# 	HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
+# fi
 
-if [ ! -f "$PRIVATE_DIR/software_version" ]; then 
-	SOFTWARE_VERSION="0.1.0"
-	echo "$SOFTWARE_VERSION" > "$PRIVATE_DIR/software_version"
-else
-	SOFTWARE_VERSION=`cat "$PRIVATE_DIR/software_version";`;
-fi
+# if [ ! -f "$PRIVATE_DIR/software_version" ]; then 
+# 	SOFTWARE_VERSION="0.1.0"
+# 	echo "$SOFTWARE_VERSION" > "$PRIVATE_DIR/software_version"
+# else
+# 	SOFTWARE_VERSION=`cat "$PRIVATE_DIR/software_version";`;
+# fi
 
+GUARDIAN_GUID=`cat "$PRIVATE_DIR/guardian_guid";`;
+API_TOKEN=`cat "$PRIVATE_DIR/api_token";`;
+API_HOSTNAME=`cat "$PRIVATE_DIR/api_hostname";`;
 
-echo " - Guardian: $GUID"
+echo " - Guardian: $GUARDIAN_GUID"
 echo " - Token: [secret]"
-echo " - RFCx API: $HOSTNAME"
+echo " - RFCx API: $API_HOSTNAME"
 
 
 if [ ! -f "$PRIVATE_DIR/registered" ]; then 
@@ -58,7 +61,7 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 	read -p " - Please provide a Registration Token (8 digit): " -n 8 -r
 	REGISTRATION_TOKEN="${REPLY}";
 
-	REGISTER=$(curl -s -X POST "$HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUID&token=$TOKEN")
+	REGISTER=$(curl -s -X POST "$API_HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUARDIAN_GUID&token=$API_TOKEN")
 
 	echo ""; echo " - "
 	echo " - $REGISTER"
