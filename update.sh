@@ -35,14 +35,16 @@ else
 
 fi
 
+##############################
 ## Send Update CheckIn to RFCx API
 $APP_DIR/utils/maintenance/api_update_checkin.sh
+##############################
 
 
-
-
+#######################
 # log archive check
 $APP_DIR/utils/log_archive.sh
+##############################
 
 
 
