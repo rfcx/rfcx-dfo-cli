@@ -28,7 +28,6 @@ else
 	$APP_DIR/utils/upgrade.sh "update"
 	$APP_DIR/utils/upgrade.sh "utils-crontab"
 	$APP_DIR/utils/upgrade.sh "utils-database_init"
-	$APP_DIR/utils/upgrade.sh "utils-json_parse"
 	$APP_DIR/utils/upgrade.sh "utils-stdin"
 	$APP_DIR/utils/upgrade.sh "utils-upgrade"
 	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
@@ -36,6 +35,7 @@ else
 	$APP_DIR/utils/upgrade.sh "utils-setup-api_register"
 	$APP_DIR/utils/upgrade.sh "utils-maintenance-logfile_archive"
 	$APP_DIR/utils/upgrade.sh "utils-maintenance-api_update_checkin"
+	$APP_DIR/utils/upgrade.sh "utils-misc-json_parse"
 
 fi
 
