@@ -18,9 +18,13 @@ GUARDIAN_GUID=`cat "$PRIVATE_DIR/guardian_guid";`;
 API_TOKEN=`cat "$PRIVATE_DIR/api_token";`;
 API_HOSTNAME=`cat "$PRIVATE_DIR/api_hostname";`;
 
-echo " - Guardian: $GUARDIAN_GUID"
-echo " - Token: [secret]"
-echo " - RFCx API: $API_HOSTNAME"
+
+
+# echo " - Guardian: $GUARDIAN_GUID"
+# echo " - Token: [secret]"
+# echo " - RFCx API: $API_HOSTNAME"
+
+
 
 ##############################
 # let's move this into a dedicated utility script
