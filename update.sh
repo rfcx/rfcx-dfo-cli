@@ -42,7 +42,7 @@ $APP_DIR/utils/maintenance/api_update_checkin.sh
 
 
 #######################
-# log archive check
+# Logfile Archive Check
 $APP_DIR/utils/maintenance/logfile_archive.sh
 ##############################
 
