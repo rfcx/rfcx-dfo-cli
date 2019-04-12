@@ -2,7 +2,6 @@
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
-LOGS_DIR="$APP_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
 PRIVATE_DIR="$APP_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
 # This script can be used to create cron entries
@@ -15,10 +14,10 @@ PARAM2=$4
 PARAM3=$5
 PARAM4=$6
 
-LOGFILEPATH="$LOGS_DIR/$SCRIPT_NAME.log";
+LOGFILEPATH="$APP_DIR/logs/$SCRIPT_NAME.log";
 SCRIPT_ID="$SCRIPT_NAME";
 if [ "$SCRIPT_NAME" = "triggerd" ]; then 
-	LOGFILEPATH="$LOGS_DIR/$PARAM1.log";
+	LOGFILEPATH="$APP_DIR/logs/$PARAM1.log";
 	SCRIPT_ID="$SCRIPT_NAME_$PARAM1";
 	PARAM1="\"${PARAM1//\%/\\\%}\""
 	PARAM3="\"${PARAM3//\%/\\\%}\""
