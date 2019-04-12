@@ -53,7 +53,7 @@ echo " - Token: [secret]"
 echo " - RFCx API: $API_HOSTNAME"
 
 
-if [ ! -f "$PRIVATE_DIR/registered" ]; then 
+if [ ! -f "$PRIVATE_DIR/api_registered" ]; then 
 
 	echo " - This Guardian must be registered with the RFCx API (see below)..."
 	echo " - "
@@ -68,7 +68,7 @@ if [ ! -f "$PRIVATE_DIR/registered" ]; then
 
 	if [ ! "$REGISTER" = "Unauthorized" ]; then
 		
-		echo "$REGISTER" > "$PRIVATE_DIR/registered"
+		echo "$REGISTER" > "$PRIVATE_DIR/api_registered"
 
 	fi
 
