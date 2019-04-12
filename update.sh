@@ -30,6 +30,7 @@ else
 	$APP_DIR/utils/upgrade.sh "utils-upgrade"
 	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
 	$APP_DIR/utils/upgrade.sh "utils-setup-create_credentials"
+	$APP_DIR/utils/upgrade.sh "utils-setup-api_register"
 
 fi
 
