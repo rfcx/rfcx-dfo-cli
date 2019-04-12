@@ -10,8 +10,8 @@ echo " - "
 
 if [ -d "$APP_DIR/.git" ]; then 
 
-	echo " - "
 	echo " - Blocking update process because this is a Git repository.";
+	echo " - "
 
 else
 
@@ -21,10 +21,10 @@ else
 		chmod a+x "$UTILS_DIR/upgrade.sh";
 	fi
 
-	echo " - "
 	echo " - Running Update script"
+	echo " - "
 	$UTILS_DIR/upgrade.sh "update" && $APP_DIR/update.sh
-
+	echo " - "
 
 	##############################
 	## Initialize Guardian credentials (if necessary)
