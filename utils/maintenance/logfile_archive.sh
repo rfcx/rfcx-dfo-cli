@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:usr/local/sbin:$PATH"
 
-APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../..";
 
 LOGS_DIR="$APP_DIR/logs"; if [ ! -d $LOGS_DIR/archive ]; then mkdir -p $LOGS_DIR/archive; fi;
 
