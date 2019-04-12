@@ -31,8 +31,20 @@ else
 	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
 	$APP_DIR/utils/upgrade.sh "utils-setup-create_credentials"
 	$APP_DIR/utils/upgrade.sh "utils-setup-api_register"
+	$APP_DIR/utils/upgrade.sh "utils-maintenance-api_update_checkin"
 
 fi
+
+## Send Update CheckIn to RFCx API
+$APP_DIR/utils/maintenance/api_update_checkin.sh
+
+
+
+
+# log archive check
+$APP_DIR/utils/log_archive.sh
+
+
 
 ##############################
 # let's remove this section ASAP
@@ -43,20 +55,8 @@ if [ ! -f "$PRIVATE_DIR/guardian_guid" ]; then cp "$PRIVATE_DIR/guid" "$PRIVATE_
 ##############################
 
 
-##############################
-# let's move this into a dedicated utility script
-if [ -f "$PRIVATE_DIR/api_hostname" ]; then 
-	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guardian_guid";`;
-	API_TOKEN=`cat "$PRIVATE_DIR/api_token";`;
-	API_HOSTNAME=`cat "$PRIVATE_DIR/api_hostname";`;
-	echo " - ";
-	echo " - Sending Diagnostic CheckIn to $API_HOSTNAME..."
-	curl -s -o /dev/null -X GET "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/software/all?role=updater-cli&version=0.1.0&battery=100&timestamp=$NOW" -H "Cache-Control: no-cache" -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $API_TOKEN";	
-fi
-##############################
 
-# log archive check
-$APP_DIR/utils/log_archive.sh
+
 
 
 
