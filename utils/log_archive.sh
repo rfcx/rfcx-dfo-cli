@@ -13,9 +13,9 @@ echo " - Running Logfile maintenance..."
 
 MAX_FILESIZE_KB=$((5*1024))
 
-if [ "$(ls -A $LOGS_DIR)" ]; then
+for LOG_FILEPATH in $LOGS_DIR/*; do
 
-	for LOG_FILEPATH in $LOGS_DIR/*.log; do
+	if [ ! -d $LOG_FILEPATH ]; then
 
 		LOG_FILESIZE_KB=$(($(($(stat $GNU_STAT_FLAG "$LOG_FILEPATH")))/1024))
 
@@ -26,11 +26,10 @@ if [ "$(ls -A $LOGS_DIR)" ]; then
 			NEW_LOG_FILEPATH="$LOGS_DIR/archive/$CURRENT_DATE_PREFIX-$LOG_FILENAME"
 
 			echo " - Archiving '$LOG_FILENAME' ($LOG_FILESIZE_KB kB)"
-
 			mv $LOG_FILEPATH $NEW_LOG_FILEPATH && touch $LOG_FILEPATH && gzip -c $NEW_LOG_FILEPATH > $NEW_LOG_FILEPATH.gz && rm $NEW_LOG_FILEPATH;
 
 		fi
 
-	done
+	fi
 
-fi
+done
