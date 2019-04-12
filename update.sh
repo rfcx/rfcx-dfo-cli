@@ -25,12 +25,12 @@ else
 	$APP_DIR/utils/upgrade.sh "utils-crontab"
 	$APP_DIR/utils/upgrade.sh "utils-database_init"
 	$APP_DIR/utils/upgrade.sh "utils-json_parse"
-	$APP_DIR/utils/upgrade.sh "utils-log_archive"
 	$APP_DIR/utils/upgrade.sh "utils-stdin"
 	$APP_DIR/utils/upgrade.sh "utils-upgrade"
 	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
 	$APP_DIR/utils/upgrade.sh "utils-setup-create_credentials"
 	$APP_DIR/utils/upgrade.sh "utils-setup-api_register"
+	$APP_DIR/utils/upgrade.sh "utils-maintenance-logfile_archive"
 	$APP_DIR/utils/upgrade.sh "utils-maintenance-api_update_checkin"
 
 fi
@@ -43,7 +43,7 @@ $APP_DIR/utils/maintenance/api_update_checkin.sh
 
 #######################
 # log archive check
-$APP_DIR/utils/log_archive.sh
+$APP_DIR/utils/maintenance/logfile_archive.sh
 ##############################
 
 
