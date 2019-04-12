@@ -8,39 +8,15 @@ UTILS_DIR="$APP_DIR/utils"; if [ ! -d $UTILS_DIR ]; then mkdir -p $UTILS_DIR; fi
 PRIVATE_DIR="$APP_DIR/.private"; if [ ! -d $PRIVATE_DIR ]; then mkdir -p $PRIVATE_DIR; fi;
 
 echo " - "
-echo " - Setup: Launched"
+echo " - Setup: Started"
 echo " - "
 
-# If necessary, initialize Guardian credentials
+# Initialize Guardian credentials (if necessary)
 $APP_DIR/utils/setup/create_credentials.sh
 
-GUARDIAN_GUID=`cat "$PRIVATE_DIR/guardian_guid";`;
-API_TOKEN=`cat "$PRIVATE_DIR/api_token";`;
-API_HOSTNAME=`cat "$PRIVATE_DIR/api_hostname";`;
+# Register with RFCx API (if necessary)
+$APP_DIR/utils/setup/api_register.sh
 
-
-
-# echo " - Guardian: $GUARDIAN_GUID"
-# echo " - Token: [secret]"
-# echo " - RFCx API: $API_HOSTNAME"
-
-
-
-##############################
-# let's move this into a dedicated utility script
-if [ ! -f "$PRIVATE_DIR/api_registered" ]; then 
-	echo " - This Guardian must be registered with the RFCx API (see below)..."
-	echo " - "
-	read -p " - Please provide a Registration Token (8 digit): " -n 8 -r
-	REGISTRATION_TOKEN="${REPLY}";
-	REGISTER=$(curl -s -X POST "$API_HOSTNAME/v1/guardians/register" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache" -H "x-auth-user: register" -H "x-auth-token: $REGISTRATION_TOKEN" -d "guid=$GUARDIAN_GUID&token=$API_TOKEN")
-	echo ""; echo " - "
-	echo " - $REGISTER"
-	if [ ! "$REGISTER" = "Unauthorized" ]; then
-		echo "$REGISTER" > "$PRIVATE_DIR/api_registered"
-	fi
-fi
-##############################
 
 
 if [ -d "$APP_DIR/.git" ]; then 
