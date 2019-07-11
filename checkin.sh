@@ -12,15 +12,15 @@ GNU_STAT_FLAG="-c%s"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_STAT_FLAG="-f%z"
 GNU_BASE64_FLAG="-w0"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_BASE64_FLAG=""; fi;
 
 # check if guardian has been set up
-if [ ! -f "$PRIVATE_DIR/guid" ]; then 
+if [ ! -f "$PRIVATE_DIR/guardian_guid" ]; then 
 
 	echo "No CheckIn because no guid/credentials have been set. Please run 'setup.sh'."
 
 else
 
-	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guid";`;
-	API_TOKEN=`cat "$PRIVATE_DIR/token";`;
-	API_HOSTNAME=`cat "$PRIVATE_DIR/hostname";`;
+	GUARDIAN_GUID=`cat "$PRIVATE_DIR/guardian_guid";`;
+	API_TOKEN=`cat "$PRIVATE_DIR/api_token";`;
+	API_HOSTNAME=`cat "$PRIVATE_DIR/api_hostname";`;
 
 	FILEPATH_ORIG=$1
 	FILENAME_TIMESTAMP_FORMAT=$2
