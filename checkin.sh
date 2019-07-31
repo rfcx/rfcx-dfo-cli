@@ -4,6 +4,7 @@ PATH="/bin:/sbin:/usr/bin:/usr/sbin:/opt/usr/bin:/opt/usr/sbin:/usr/local/bin:us
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 TMP_DIR="$APP_DIR/tmp"; if [ ! -d $TMP_DIR ]; then mkdir -p $TMP_DIR; fi;
 DB_DIR="$APP_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
+LOGS_DIR="$APP_DIR/logs"; if [ ! -d $LOGS_DIR ]; then mkdir -p $LOGS_DIR; fi;
 PRIVATE_DIR="$APP_DIR/.private"
 
 # Environmental Customizations
@@ -98,7 +99,7 @@ else
 			echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
 			# echo " - JSON: $CHECKIN_JSON"
 
-			EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $API_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" 2>$APP_DIR/logs/error_checkin_curl.log)
+			EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $API_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" 2>$LOGS_DIR/error_checkin_curl.log)
 
 			if [[ $EXEC_CHECKIN == *"checkin_id"* ]]; then
 
