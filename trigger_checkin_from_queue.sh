@@ -7,6 +7,11 @@ DB_DIR="$APP_DIR/databases"; if [ ! -d $DB_DIR ]; then mkdir -p $DB_DIR; fi;
 GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate"; fi;
 
 FILENAME_TIMESTAMP_FORMAT=$1
+if [ -z "$1" ]; then
+	if [ -f "$PRIVATE_DIR/prefs_audio_filename_patter" ]; then
+		FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/prefs_audio_filename_pattern";`;
+	fi
+fi
 
 MAX_BATCH_COUNT=3
 

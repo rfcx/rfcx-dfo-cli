@@ -40,21 +40,34 @@ else
 	$UTILS_DIR/setup/api_register.sh
 	##############################
 
+	##############################
+	## Set Guardian Environment Prefs
+	$UTILS_DIR/prefs/audio_directory.sh
+	$UTILS_DIR/prefs/audio_filetype.sh
+	$UTILS_DIR/prefs/audio_filename_pattern.sh
+	$UTILS_DIR/prefs/latitude_longitude.sh
+	##############################
 
-
-
-
+	##############################
+	## Initialize SQLite Databases
 	echo " - "
 	echo " - Creating database files, if they don't already exist..."
 	$APP_DIR/utils/database_init.sh "checkins-queued"
 	$APP_DIR/utils/database_init.sh "checkins-sent"
 	$APP_DIR/utils/database_init.sh "checkins-complete"
+	##############################
 
 	# set cron jobs
 	if [ -f "$APP_DIR/utils/crontab.sh" ]; then
-		$APP_DIR/utils/crontab.sh "update" 20
-		$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 "SCW1840_%Y%Y%m%d_%H%M%S"
-		$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
+
+		$APP_DIR/utils/crontab.sh "update" 30
+
+		$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60
+		#$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 "SCW1840_%Y%Y%m%d_%H%M%S"
+
+		$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60
+		#$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
+
 	fi
 
 fi
