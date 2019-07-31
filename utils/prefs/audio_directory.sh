@@ -24,7 +24,7 @@ if [ "$FORCE_SET_AUDIO_DIRECTORY" = "y" ]; then
 		echo " - Please provide the expected incoming audio directory filepath (Example: '/var/www/sites/Sand_Heads/'):"
 		read -p " - Enter the audio directory filepath: " -n 120 -r
 		AUDIO_DIRECTORY="${REPLY}"
-
+		AUDIO_DIRECTORY=$(echo -e "${AUDIO_DIRECTORY}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 fi
 
 echo " - "

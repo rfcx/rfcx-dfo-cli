@@ -24,6 +24,7 @@ if [ "$FORCE_SET_AUDIO_FILENAME_PATTERN" = "y" ]; then
 		echo " - Please provide the expected incoming audio filename pattern (Example: 'SCW1840_%Y%Y%m%d_%H%M%S'):"
 		read -p " - Enter the audio filename pattern: " -n 80 -r
 		AUDIO_FILENAME_PATTERN="${REPLY}"
+		AUDIO_FILENAME_PATTERN=$(echo -e "${AUDIO_FILENAME_PATTERN}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
 fi
 

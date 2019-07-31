@@ -24,11 +24,11 @@ if [ "$FORCE_SET_AUDIO_FILETYPE" = "y" ]; then
 		echo " - Please provide the expected incoming audio filetype (Examples: 'wav', 'flac', 'opus', 'mp3'):"
 		read -p " - Enter the audio filetype: " -n 15 -r
 		AUDIO_FILETYPE=$(echo ${REPLY} | tr '[:upper:]' '[:lower:]')
-		echo "$AUDIO_FILETYPE" > "$PRIVATE_DIR/prefs_audio_filetype"
 
 fi
 
 if [ ! -f "$PRIVATE_DIR/prefs_audio_filetype" ]; then
+	AUDIO_FILETYPE=$(echo -e "${AUDIO_FILETYPE}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 	echo "$AUDIO_FILETYPE" > "$PRIVATE_DIR/prefs_audio_filetype"
 fi
 
