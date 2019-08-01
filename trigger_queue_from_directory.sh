@@ -37,7 +37,7 @@ if [ -d "$AUDIO_DIRECTORY" ]; then
 
 
 			echo $FILENAME_ORIG
-			$APP_DIR/queue.sh $FILEPATH_ORIG
+			$APP_DIR/queue.sh "$FILEPATH_ORIG"
 
 			# 	# CODEC_ORIG=$(echo $FILENAME_ORIG | rev | cut -d'.' -f 1 | rev | tr '[:upper:]' '[:lower:]')
 			# 	# TIMESTAMP_ORIG=$(echo $FILENAME_ORIG | cut -d'.' -f 1)
