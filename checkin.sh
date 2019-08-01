@@ -106,7 +106,7 @@ else
 
 			echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
 			echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
-			echo " - JSON: $CHECKIN_JSON"
+			#echo " - JSON: $CHECKIN_JSON"
 
 			EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $API_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" 2>$LOGS_DIR/error_checkin_curl.log)
 
@@ -115,11 +115,11 @@ else
 				COMPLETED_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 				CHECKIN_LATENCY=$(($COMPLETED_AT_EPOCH-$SENT_AT_EPOCH))
 
-				CHECKIN_GUID=$($APP_DIR/utils/json_parse.sh 'checkin_id' $EXEC_CHECKIN);
-				AUDIO_GUID=$($APP_DIR/utils/json_parse.sh 'guid' $EXEC_CHECKIN);
+				CHECKIN_GUID=$($APP_DIR/utils/misc/json_parse.sh 'checkin_id' $EXEC_CHECKIN);
+				AUDIO_GUID=$($APP_DIR/utils/misc/json_parse.sh 'guid' $EXEC_CHECKIN);
 
 				echo " - CheckIn: $CHECKIN_GUID - Audio: $AUDIO_GUID - Latency: $CHECKIN_LATENCY ms"
-				echo " - JSON: $EXEC_CHECKIN";
+				#echo " - JSON: $EXEC_CHECKIN";
 				
 				# add/remove entries from local databases
 				if [ -f "$DB_DIR/checkins-complete.db" ]; then
