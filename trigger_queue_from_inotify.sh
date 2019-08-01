@@ -25,7 +25,7 @@ if [ -d "$AUDIO_DIRECTORY" ]; then
 	for i in {1..12}
 	do
 
-		inotifywait --event moved_to --event modify --format "%w%f" --timeout 20 --quiet "$AUDIO_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $APP_DIR/utils/stdin.sh "queue"
+		inotifywait --event moved_to --event close --format "%w%f" --timeout 20 --quiet "$AUDIO_DIRECTORY" | grep --line-buffered $REGEX_FILTER | $APP_DIR/utils/stdin.sh "queue"
 
 	done
 
