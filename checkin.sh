@@ -91,13 +91,21 @@ else
 
 			EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
 
+			LAT_LNG_JSON="";
+			if [ -f "$PRIVATE_DIR/prefs_latitude" ]; then
+				LAT=`cat "$PRIVATE_DIR/prefs_latitude";`;
+				LNG=`cat "$PRIVATE_DIR/prefs_longitude";`;
+				echo "$LAT,$LNG";
+				LAT_LNG_JSON="\"location\":\"$LAT*$LNG*1\",";
+			fi
+
 			SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
-			CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,\"measured_at\":$SENT_AT_EPOCH,\"software\":\"guardian-cli*0.1.0|updater-cli*0.1.0\",\"battery\":\"$SENT_AT_EPOCH*100*0\",\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
+			CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,$LAT_LNG_JSON\"measured_at\":$SENT_AT_EPOCH,\"software\":\"guardian-cli*0.1.0|updater-cli*0.1.0\",\"battery\":\"$SENT_AT_EPOCH*100*0\",\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
 			CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g') 
 
 			echo " - Timestamp: $DATETIME_ISO ($DATETIME_EPOCH)";
 			echo " - Codec: $CODEC_FINAL — Sample Rate: $AUDIO_SAMPLE_RATE Hz — File Size: $AUDIO_FINAL_FILESIZE bytes";
-			# echo " - JSON: $CHECKIN_JSON"
+			echo " - JSON: $CHECKIN_JSON"
 
 			EXEC_CHECKIN=$(curl -X POST -H "x-auth-user: guardian/$GUARDIAN_GUID" -H "x-auth-token: $API_TOKEN" -H "Cache-Control: no-cache" -H "Content-Type: multipart/form-data" -F "meta=${CHECKIN_JSON_ZIPPED}" -F "audio=@${AUDIO_FINAL_FILEPATH}.gz" "$API_HOSTNAME/v1/guardians/$GUARDIAN_GUID/checkins" 2>$LOGS_DIR/error_checkin_curl.log)
 

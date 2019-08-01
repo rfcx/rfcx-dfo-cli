@@ -61,12 +61,8 @@ else
 	if [ -f "$APP_DIR/utils/crontab.sh" ]; then
 
 		$APP_DIR/utils/crontab.sh "update" 30
-
-		$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60
-		#$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 "SCW1840_%Y%Y%m%d_%H%M%S"
-
-		$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60
-		#$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 "/var/www/sites/Sand_Heads/" "wav"
+		$APP_DIR/utils/crontab.sh "triggerd" 1 "checkin_from_queue" 60 #"SCW1840_%Y%Y%m%d_%H%M%S"
+		$APP_DIR/utils/crontab.sh "triggerd" 1 "queue_from_inotify" 60 #"/var/www/sites/Sand_Heads/" "wav"
 
 	fi
 
