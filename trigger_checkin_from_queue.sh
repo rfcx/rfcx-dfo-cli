@@ -9,7 +9,7 @@ GNU_DATE_BIN="date"; if [[ "$OSTYPE" == "darwin"* ]]; then GNU_DATE_BIN="gdate";
 
 FILENAME_TIMESTAMP_FORMAT=$1
 if [ -z "$1" ]; then
-	if [ -f "$PRIVATE_DIR/prefs_audio_filename_patter" ]; then
+	if [ -f "$PRIVATE_DIR/prefs_audio_filename_pattern" ]; then
 		FILENAME_TIMESTAMP_FORMAT=`cat "$PRIVATE_DIR/prefs_audio_filename_pattern";`;
 	fi
 fi
