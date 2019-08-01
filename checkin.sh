@@ -91,15 +91,16 @@ else
 
 			EXEC_AUDIO_COMPRESS=$(gzip -c "$AUDIO_FINAL_FILEPATH" > "$AUDIO_FINAL_FILEPATH.gz")
 
+			SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
+
 			LAT_LNG_JSON="";
 			if [ -f "$PRIVATE_DIR/prefs_latitude" ]; then
 				LAT=`cat "$PRIVATE_DIR/prefs_latitude";`;
 				LNG=`cat "$PRIVATE_DIR/prefs_longitude";`;
 				echo "$LAT,$LNG";
-				LAT_LNG_JSON="\"location\":\"$LAT*$LNG*1\",";
+				LAT_LNG_JSON="\"location\":\"$SENT_AT_EPOCH*$LAT*$LNG*1\",";
 			fi
 
-			SENT_AT_EPOCH=$(($($GNU_DATE_BIN '+%s%N' | cut -b1-13)+0))
 			CHECKIN_JSON="{\"audio\":\"$SENT_AT_EPOCH*$DATETIME_EPOCH*$CODEC_FINAL*$AUDIO_FINAL_SHA1*$AUDIO_SAMPLE_RATE*1*$CODEC_FINAL*vbr*1*${AUDIO_SAMPLE_PRECISION}bit\",\"queued_at\":$SENT_AT_EPOCH,$LAT_LNG_JSON\"measured_at\":$SENT_AT_EPOCH,\"software\":\"guardian-cli*0.1.0|updater-cli*0.1.0\",\"battery\":\"$SENT_AT_EPOCH*100*0\",\"queued_checkins\":\"1\",\"skipped_checkins\":\"0\",\"stashed_checkins\":\"0\"}"
 			CHECKIN_JSON_ZIPPED=$(echo -n "$CHECKIN_JSON" | gzip -c | base64 $GNU_BASE64_FLAG | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g') 
 
