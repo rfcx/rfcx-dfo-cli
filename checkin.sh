@@ -118,7 +118,7 @@ else
 				AUDIO_GUID=$($APP_DIR/utils/json_parse.sh 'guid' $EXEC_CHECKIN);
 
 				echo " - CheckIn: $CHECKIN_GUID - Audio: $AUDIO_GUID - Latency: $CHECKIN_LATENCY ms"
-				# echo " - JSON: $EXEC_CHECKIN";
+				echo " - JSON: $EXEC_CHECKIN";
 				
 				# add/remove entries from local databases
 				if [ -f "$DB_DIR/checkins-complete.db" ]; then
