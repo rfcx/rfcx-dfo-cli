@@ -32,6 +32,7 @@ else
 	$APP_DIR/utils/upgrade.sh "utils-upgrade"
 	$APP_DIR/utils/upgrade.sh "utils-checkin-checkin_json_build"
 	$APP_DIR/utils/upgrade.sh "utils-prefs-latitude_longitude"
+	$APP_DIR/utils/upgrade.sh "utils-prefs-timezone_offset"
 	$APP_DIR/utils/upgrade.sh "utils-prefs-audio_filetype"
 	$APP_DIR/utils/upgrade.sh "utils-prefs-audio_directory"
 	$APP_DIR/utils/upgrade.sh "utils-prefs-audio_filename_pattern"
