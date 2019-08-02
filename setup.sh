@@ -46,6 +46,7 @@ else
 	$UTILS_DIR/prefs/audio_filetype.sh
 	$UTILS_DIR/prefs/audio_filename_pattern.sh
 	$UTILS_DIR/prefs/latitude_longitude.sh
+	$UTILS_DIR/prefs/timezone_offset.sh
 	##############################
 
 	##############################
