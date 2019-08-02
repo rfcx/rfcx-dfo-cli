@@ -9,9 +9,7 @@ The format of the filename is configurable. For example, if you have a set of fi
 
 ## Requirements
 
-Operating systems:
-- Ubuntu?
-- macOS? appears to be supported as there are checks for "darwin"
+Operating systems supported: Ubuntu, macOS
 
 The shell (bash) scripts require the following commands to be installed:
 
@@ -23,6 +21,12 @@ The shell (bash) scripts require the following commands to be installed:
 - `wget` for upgrading the files (e.g.  downloading an updated version of the project) in setup.sh and upgrade.sh
 - `inotify` for queue processing? (not fully understood!) and `sqlite3` for handling the queue as a database of requests
 - `stat` for file inspection
+
+
+To setup for running locally on Mac:
+```
+brew install wget ffmpeg sox date gzip base64 sqlite3 coreutils
+```
 
 To install on a Ubuntu/Debian-based system: // TODO test this
 ```
